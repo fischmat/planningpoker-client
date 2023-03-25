@@ -1,4 +1,10 @@
+html {
+    height: 100%;
+}
 
 body {
-    background-color: #e9ddcf;
+  background-color: #ddd;
+  background-image: url("@/assets/setup_back.png");
+  background-repeat: no-repeat;
+  background-position: right bottom;
 }
