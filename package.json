@@ -16,12 +16,14 @@
     "@fontsource/dancing-script": "^4.5.11",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.3",
+    "lodash": "^4.17.21",
     "pinia": "^2.0.32",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.0",
+    "@types/lodash": "^4.14.192",
     "@types/node": "^18.14.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/test-utils": "^2.3.0",

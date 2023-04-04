@@ -20,7 +20,7 @@ const router = createRouter({
     {
       path: '/game-setup',
       name: 'game-setup',
-      component: () => import('../views/GameSetupView.vue')
+      component: () => import('../views/SetupGameView.vue')
     },
     {
       path: '/join-game',
@@ -30,7 +30,12 @@ const router = createRouter({
     {
       path: '/game-password',
       name: 'game-password',
-      component: () => import('../views/GamePasswordView.vue')
+      component: () => import('../views/JoinGamePasswordView.vue')
+    },
+    {
+      path: '/game',
+      name: 'game',
+      component: () => import('../views/GameView.vue')
     }
   ]
 })

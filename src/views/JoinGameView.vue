@@ -39,40 +39,8 @@ let username = ref<string>("");
 </template>
   
 <style>
-.settings {
-  margin-left: 10%;
-  margin-top: 10%;
-  max-width: 50%;
-  padding: 20px;
-  border-left: 3px solid #aaa;
-}
-
-.settings h1 {
-  text-transform: uppercase;
-  font-weight: 300;
-  color: #aaa;
-  margin-bottom: 30px;
-}
-
-.settings label {
-  text-transform: uppercase;
-  color: #aaa;
-}
-
-.settings .btn-primary {
-  background-color: #00c3ac;
-  border-color: #00c3ac;
-  width: 100px;
-  float: right;
-  text-transform: uppercase;
-}
-
 .settings .avatar {
   margin-bottom: 10px;
-}
-
-.settings .form-group {
-  margin-bottom: 30px;
 }
 
 .avatar {
