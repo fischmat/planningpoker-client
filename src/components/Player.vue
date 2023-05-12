@@ -1,0 +1,56 @@
+<script setup lang="ts">
+import type { Card, User } from "@/model/Model";
+import AvatarCard from "@/components/AvatarCard.vue";
+import PokerCard from "@/components/PokerCard.vue";
+import { computed } from "vue";
+
+const props = defineProps<{
+  user: User;
+}>();
+
+const card = computed(() => {
+  return { value: 5 } as Card;
+});
+
+const hideCard = computed(() => {
+  return true;
+});
+</script>
+
+<template>
+  <div class="player">
+    <div>
+      <AvatarCard :user="user" />
+      <PokerCard
+        class="card"
+        :value="card.value"
+        :hidden="hideCard"
+        logo="https://cdn.freebiesupply.com/logos/large/2x/acme-logo-png-transparent.png"
+      />
+    </div>
+    <span class="name">{{ user.name }}</span>
+  </div>
+</template>
+
+<style scoped>
+.player {
+  position: absolute;
+}
+
+.name {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+  color: #444;
+}
+
+.card {
+  width: 70px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  right: -60px;
+  rotate: 10deg;
+}
+</style>

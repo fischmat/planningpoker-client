@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import type { User } from "@/model/Model";
 import { computed } from "vue"
 
 const props = defineProps<{
-  name: string
+  user: User
 }>()
 
-const avatarUrl = computed(() => `https://api.dicebear.com/5.x/adventurer/svg?seed=${props.name}`)
+const avatarUrl = computed(() => `https://api.dicebear.com/5.x/adventurer/svg?seed=${props.user.name}`)
 </script>
 
 <template>
