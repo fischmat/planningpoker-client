@@ -17,7 +17,11 @@ import MainMenuItem from '@/components/MainMenuItem.vue';
   </main>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins';
+
 main {
   height: 100vh;
 }
@@ -25,11 +29,19 @@ main {
 .card-container {
   width: 100%;
   height: 100%;
-  padding-left: 10%;
-  padding-top: 10%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
 }
 
 #join-game-card {
   top: 30px;
+}
+
+@include media-breakpoint-up(md) {
+  .card-container {
+    padding-left: 10%;
+    padding-top: 10%;
+  }
 }
 </style>

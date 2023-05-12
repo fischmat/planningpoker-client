@@ -26,14 +26,12 @@ const props = defineProps<{
 </template>
 
 <style lang="scss" scoped>
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins';
+
 .card {
-  -webkit-box-shadow: 5px 5px 8px -1px rgba(0, 0, 0, 0.36);
-  box-shadow: 5px 5px 8px -1px rgba(0, 0, 0, 0.36);
-  height: 70%;
-  max-width: 200px;
-  margin: 10px;
-  position: relative;
-  display: inline-block;
+  min-height: 40vh;
 }
 
 .card:hover {
@@ -52,9 +50,25 @@ const props = defineProps<{
 .card .watermark {
   position: absolute;
   bottom: 0;
-  width: 80%;
+  width: 30%;
   margin-left: 10%;
   margin-bottom: 10%;
   opacity: 0.7;
+}
+
+@include media-breakpoint-up(md) {
+  .card {
+    -webkit-box-shadow: 5px 5px 8px -1px rgba(0, 0, 0, 0.36);
+    box-shadow: 5px 5px 8px -1px rgba(0, 0, 0, 0.36);
+    height: 70%;
+    max-width: 200px;
+    margin: 10px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .card .watermark {
+    width: 80%;
+  }
 }
 </style>
