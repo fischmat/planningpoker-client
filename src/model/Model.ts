@@ -2,7 +2,8 @@
 export type Player = {
     id: string | null,
     name: string,
-    gameIds: [string]
+    gameIds: string[],
+    avatar: AvatarProps
 }
 
 export interface PlayerStub {

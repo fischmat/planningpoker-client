@@ -2,55 +2,56 @@
 import { ref } from "vue";
 import _ from "lodash";
 import PokerCard from "./PokerCard.vue";
+import type { Card } from "@/model/Model";
 
 const props = defineProps<{
-  cards: number[];
+  cards: Card[];
 }>();
 
 const emit = defineEmits<{
-  (e: "update", value: number | undefined): void;
+  (e: "update", value: Card | undefined): void;
 }>();
 
 // Data
 const cardVisibility = ref(
-  _.fromPairs(_.map(props.cards, (card) => [card, true]))
+  _.fromPairs(_.map(props.cards, (card) => [card.value, true]))
 );
-const activeCard = ref<number | undefined>(undefined);
+const activeCard = ref<Card | undefined>(undefined);
 
 // Methods
 
-function playCard(card: number) {
-  if (activeCard.value === card) {
+function playCard(card: Card) {
+  if (activeCard.value?.value === card.value) {
     // Show all cards again
-    props.cards.forEach((c) => (cardVisibility.value[c] = true));
+    props.cards.forEach((c) => (cardVisibility.value[c.value] = true));
     activeCard.value = undefined;
     emit("update", undefined);
   } else {
     // Hide other cards
     props.cards
       .filter((c) => c !== card)
-      .forEach((c) => (cardVisibility.value[c] = false));
+      .forEach((c) => (cardVisibility.value[c.value] = false));
     // Set as active card and emit event
     activeCard.value = card;
     emit("update", card);
   }
 }
 
-function isHidden(card: number) {
-  return !cardVisibility.value[card];
+function isHidden(card: Card) {
+  return !cardVisibility.value[card.value];
 }
 
-function isActiveCard(card: number) {
-  return activeCard && card == activeCard.value;
+function isActiveCard(card: Card) {
+  return activeCard.value && card.value == activeCard.value?.value;
 }
 
-function isInactiveCard(card: number) {
-  return activeCard && card != activeCard.value;
+function isInactiveCard(card: Card) {
+  return activeCard.value && card.value != activeCard.value?.value;
 }
 
-function peekCard(card: number, visible: boolean) {
+function peekCard(card: Card, visible: boolean) {
   if (activeCard.value !== undefined && activeCard.value !== card) {
-    cardVisibility.value[card] = visible;
+    cardVisibility.value[card.value] = visible;
   }
 }
 </script>
@@ -59,14 +60,14 @@ function peekCard(card: number, visible: boolean) {
   <div class="deck-container">
     <div class="deck">
       <div class="row">
-        <div v-for="card in cards" v-bind:key="card" class="col">
+        <div v-for="card in cards" v-bind:key="card.value" class="col">
           <PokerCard
             @mouseover="peekCard(card, true)"
             @mouseleave="peekCard(card, false)"
             class="card"
             :class="{ inactive: isInactiveCard(card), active: isActiveCard(card) }"
             :hidden="isHidden(card)"
-            :value="card"
+            :card="card"
             @click="playCard(card)"
             logo="https://cdn.freebiesupply.com/logos/large/2x/acme-logo-png-transparent.png"
           />

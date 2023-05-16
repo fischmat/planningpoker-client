@@ -1,36 +1,34 @@
 <script setup lang="ts">
 import CardDeck from '@/components/CardDeck.vue';
 import PlayerGallery from '@/components/PlayerGallery.vue';
-import type { User } from '@/model/Model';
+import type { Player } from '@/model/Model';
 
-const cards = [1, 2, 3, 5, 8, 13, 21, 34];
-const players: User[] = [
+const cards = [
+  { value: 1 },
+  { value: 3 },
+  { value: 5 },
+  { value: 8 },
+  { value: 13 },
+  { value: 21 },
+];
+const players: Player[] = [
   {
-    name: "Fisch"
-  },
-  {
-    name: "Bomml"
-  },
-  {
-    name: "Nitin"
-  },
-  {
-    name: "Fil"
-  },
-  {
-    name: "2Peter"
-  },
-  {
-    name: "Thommy"
-  },
-  {
-    name: "Claus"
-  },
-  {
-    name: "Hadde"
-  },
-  {
-    name: "Vesselina"
+    id: "abcd",
+    name: "Fisch",
+    gameIds: [],
+    avatar: {
+      backgroundColor: "transparent",
+      earrings: null,
+      eyebrows: 1,
+      eyes: 1,
+      features: [],
+      glasses: null,
+      hair: 1,
+      longHair: false,
+      hairColor: "000000",
+      mouth: 1,
+      skinColor: "ffdbac"
+    }
   }
 ]
 

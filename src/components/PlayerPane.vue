@@ -5,7 +5,7 @@ import PokerCard from "@/components/PokerCard.vue";
 import { computed } from "vue";
 
 const props = defineProps<{
-  user: Player;
+  player: Player;
 }>();
 
 const card = computed(() => {
@@ -19,22 +19,20 @@ const hideCard = computed(() => {
 
 <template>
   <div class="player">
-    <div>
-      <AvatarCard :user="user" />
-      <PokerCard
-        class="card"
-        :value="card.value"
-        :hidden="hideCard"
-        logo="https://cdn.freebiesupply.com/logos/large/2x/acme-logo-png-transparent.png"
-      />
+    <div class="avatar-container">
+      <AvatarCard :avatar="player.avatar" />
+      <span class="name">{{ player.name }}</span>
     </div>
-    <span class="name">{{ user.name }}</span>
   </div>
 </template>
 
 <style scoped>
 .player {
   position: absolute;
+}
+
+.avatar-container {
+  width: 150px;
 }
 
 .name {

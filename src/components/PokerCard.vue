@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { computed, defineComponent } from "vue";
 import _ from "lodash";
+import type { Card } from "@/model/Model";
 
 const props = defineProps<{
-  value: number;
-  hidden: boolean;
-  logo?: string;
+  card: Card,
+  hidden: boolean,
+  logo?: string
 }>();
 
 const emit = defineEmits(['click']);
 
 function cardIcon(card: number) {
   const icons = ["♣", "♠", "♥", "♦"];
-  return icons[this.props.value % icons.length];
+  return icons[props.card.value % icons.length];
 }
 
 const logoUrl = computed(() => {
@@ -24,11 +25,11 @@ const logoUrl = computed(() => {
 <template>
   <div class="card" :class="{ hidden: hidden }" @click="emit('click')">
     <div v-if="!hidden">
-      <span class="corner top-left">{{ value }}</span>
-      <span class="corner top-right">{{ cardIcon(value) }}</span>
-      <span class="title">{{ value }}</span>
-      <span class="corner bottom-left">{{ cardIcon(value) }}</span>
-      <span class="corner bottom-right">{{ value }}</span>
+      <span class="corner top-left">{{ card.value }}</span>
+      <span class="corner top-right">{{ cardIcon(card.value) }}</span>
+      <span class="title">{{ card.value }}</span>
+      <span class="corner bottom-left">{{ cardIcon(card.value) }}</span>
+      <span class="corner bottom-right">{{ card.value }}</span>
     </div>
     <div v-else>
       <img
