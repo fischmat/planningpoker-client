@@ -1,5 +1,5 @@
 import { api } from "./API";
-import type { ApplicationInfo } from "./Model";
+import type { ApplicationInfo } from "@/model/Model";
 
 
 export const infoService = {

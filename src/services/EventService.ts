@@ -1,6 +1,6 @@
 import { infoService } from "./InfoService";
 import io from "socket.io-client";
-import type { Player, Round, Vote } from "./Model";
+import type { Player, Round, Vote } from "@/model/Model";
 import { sha512 } from "js-sha512";
 import PubSub from 'pubsub-js'
 

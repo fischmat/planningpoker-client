@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { User } from "@/model/Model";
-import Player from "@/components/Player.vue";
+import type { Player } from "@/model/Model";
 
 const props = defineProps<{
-  players: User[]
+  players: Player[]
 }>()
 
 </script>

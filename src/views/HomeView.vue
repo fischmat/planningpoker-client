@@ -10,7 +10,7 @@ import MainMenuItem from '@/components/MainMenuItem.vue';
         <MainMenuItem id="start-game-card" title="Start Game" icon="/start.png" color="#00c3ac" />
       </RouterLink>
 
-      <RouterLink to="join-game">
+      <RouterLink to="edit-player">
         <MainMenuItem id="join-game-card" title="Join Game" icon="/join.png" color="#3636fd" />
       </RouterLink>
     </div>

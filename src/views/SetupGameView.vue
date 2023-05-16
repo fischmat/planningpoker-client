@@ -45,7 +45,7 @@ async function onSubmit(e: any) {
   });
   console.log(`Created new game ${game.id}.`);
   eventService.enterGame(game.id!!, password.value);
-  router.push({ name: 'game' })
+  router.push({ name: 'edit-player' })
 }
 
 </script>

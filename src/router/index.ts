@@ -23,9 +23,9 @@ const router = createRouter({
       component: () => import('../views/SetupGameView.vue')
     },
     {
-      path: '/join-game',
-      name: 'join-game',
-      component: () => import('../views/JoinGameView.vue')
+      path: '/edit-player',
+      name: 'edit-player',
+      component: () => import('../views/PlayerEditorView.vue')
     },
     {
       path: '/game-password',

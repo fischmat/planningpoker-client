@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type { User } from "@/model/Model";
+import type { AvatarProps, PlayerStub } from "@/model/Model";
+import { playerService } from "@/services/PlayerService";
 import { computed } from "vue"
 
 const props = defineProps<{
-  user: User
+  avatar: AvatarProps
 }>()
 
-const avatarUrl = computed(() => `https://api.dicebear.com/5.x/adventurer/svg?seed=${props.user.name}`)
+const avatarUrl = computed(() => playerService.getAvatarPreview(props.avatar))
 </script>
 
 <template>
@@ -17,7 +18,7 @@ const avatarUrl = computed(() => `https://api.dicebear.com/5.x/adventurer/svg?se
 
 <style scoped>
 .avatar {
-  width: 100px;
+  width: 100%;
   border: 1px solid #aaa;
   border-radius: 50px;
   padding: 10px;

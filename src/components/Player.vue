@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { Card, User } from "@/model/Model";
+import type { Card, Player } from "@/model/Model";
 import AvatarCard from "@/components/AvatarCard.vue";
 import PokerCard from "@/components/PokerCard.vue";
 import { computed } from "vue";
 
 const props = defineProps<{
-  user: User;
+  user: Player;
 }>();
 
 const card = computed(() => {

@@ -1,5 +1,5 @@
 import { api } from "./API"
-import type { GameStub, Game } from "./Model"
+import type { GameStub, Game } from "@/model/Model"
 
 export const gameService = {
 
