@@ -15,10 +15,14 @@
   "dependencies": {
     "@fontsource/dancing-script": "^4.5.11",
     "@popperjs/core": "^2.11.6",
+    "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
+    "js-sha512": "^0.8.0",
     "lodash": "^4.17.21",
     "pinia": "^2.0.32",
+    "pubsub-js": "^1.9.4",
     "sass": "^1.62.1",
+    "socket.io-client": "^2.5.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
@@ -26,6 +30,7 @@
     "@types/jsdom": "^21.1.0",
     "@types/lodash": "^4.14.192",
     "@types/node": "^18.14.0",
+    "@types/pubsub-js": "^1.8.3",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/test-utils": "^2.3.0",
     "@vue/tsconfig": "^0.1.3",
