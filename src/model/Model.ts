@@ -50,6 +50,10 @@ export type Game = {
     hasPassword: boolean
 }
 
+export type PasswordNote = {
+    password?: string
+}
+
 export type GameStub = {
     name: string,
     password: string | null,

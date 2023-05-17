@@ -8,52 +8,80 @@ import { playerService } from '@/services/PlayerService';
 import { useSessionStore } from '@/stores/stores';
 import _ from 'lodash';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
-const cards = [
-  { value: 1 },
-  { value: 3 },
-  { value: 5 },
-  { value: 8 },
-  { value: 13 },
-  { value: 21 },
-];
+const cards = ref<Card[]>([]);
 const players = ref<Player[]>([])
 
 const sessionStore = useSessionStore()
 const router = useRouter()
+const route = useRoute()
 
+// -------------
 // Initalization
+// -------------
 
-playerService.getPlayer()
-  .then((player) => {
-    if (player == null) {
-      // Send to player creation if no session yet
-      router.push({ name: 'edit-player' });
+async function init(): Promise<any> {
+  // Set current game from URL params
+  if (route.query.gameId) {
+    sessionStore.currentGame = await gameService.getGame(route.query.gameId as string);
+  }
+
+  // Go to index if no game is active yet
+  if (!sessionStore.currentGame) {
+    await router.push({ path: "/" })
+    return
+  }
+
+  // Set player
+  sessionStore.currentPlayer = await playerService.getPlayer()
+  if (!sessionStore.currentPlayer) {
+    await router.push({ name: 'edit-player' });
+    return
+  }
+
+  const isPlayerInGame = _.some(sessionStore.currentPlayer?.gameIds, (id) => id == sessionStore.currentGame?.id);
+
+  // Check password
+  if (sessionStore.currentGame?.hasPassword && !isPlayerInGame && !sessionStore.currentGame.password) {
+      await router.push({ name: "game-password" })
+      return
+  }
+
+  // Enter the game
+  sessionStore.currentPlayer = await gameService.joinGame(sessionStore.currentGame.id!!, sessionStore.currentGame.password || null)
+  await eventService.enterGame(sessionStore.currentGame.id!!, sessionStore.currentGame.password || null)
+
+  cards.value = sessionStore.currentGame?.playableCards || []
+  players.value = await gameService.getPlayers(sessionStore.currentGame?.id!!); // FIXME
+
+  // Register for events
+
+  eventService.onPlayerJoined((event) => {
+    if (event.gameId == sessionStore.currentGame?.id) {
+      players.value.push(event.player);
     }
+  });
+  eventService.onPlayerLeft((event) => {
+    if (event.gameId == sessionStore.currentGame?.id) {
+      _.remove(players.value, (p) => p.id == event.player.id)
+    }
+  });
+  eventService.onRoundStarted((event) => {
+    sessionStore.currentRound = event.round
+  });
+  eventService.onRoundEnded((event) => {
+    sessionStore.currentRound = null
+  });
+}
+
+init().then(() => {
+  console.log("Game successfully initialized!")
+})
+  .catch((e) => {
+    console.error("Error while initilizing game.", e)
   })
 
-// Register for events
-
-eventService.onPlayerJoined((event) => {
-  if (event.gameId == sessionStore.currentGame?.id) {
-    players.value.push(event.player);
-  }
-});
-
-eventService.onPlayerLeft((event) => {
-  if (event.gameId == sessionStore.currentGame?.id) {
-    _.remove(players.value, (p) => p.id == event.player.id)
-  }
-});
-
-eventService.onRoundStarted((event) => {
-  sessionStore.currentRound = event.round
-});
-
-eventService.onRoundEnded((event) => {
-  sessionStore.currentRound = null
-});
 
 // Methods
 

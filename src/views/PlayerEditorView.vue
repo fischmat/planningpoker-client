@@ -49,6 +49,20 @@ function onSubmit() {
     })
 }
 
+// Initialization
+
+async function init() {
+  const me = await playerService.getPlayer()
+  if (me) {
+    sessionStore.currentPlayer = me
+    player.value = me
+  }
+}
+
+init()
+  .then(() => console.log("Player initialized!"))
+  .catch((e) => console.error("Failed to initialize player.", e))
+
 </script>
 
 
