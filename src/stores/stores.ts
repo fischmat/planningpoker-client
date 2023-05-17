@@ -1,9 +1,11 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import type { Player } from '@/model/Model'
+import type { Game, Round, Player } from '@/model/Model'
 
-export const usePlayerStore = defineStore('player', () => {
+export const useSessionStore = defineStore('player', () => {
   const currentPlayer = ref<Player | null>(null)
+  const currentGame = ref<Game | null>(null)
+  const currentRound = ref<Round | null>(null)
 
-  return { currentPlayer }
-})
+  return { currentPlayer, currentGame, currentRound }
+});

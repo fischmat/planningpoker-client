@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Player } from "@/model/Model";
-import PlayerPane from "./PlayerPane.vue";
+import GalleryItem from "./GalleryItem.vue";
 
 const props = defineProps<{
   players: Player[]
@@ -12,7 +12,7 @@ const props = defineProps<{
   <div class="gallery">
     <div class="row">
         <div v-for="player in players" v-bind:key="player.name" class="col-4">
-            <PlayerPane :player="player" />
+            <GalleryItem :player="player" />
         </div>
     </div>
   </div>

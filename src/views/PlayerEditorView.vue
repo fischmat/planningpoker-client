@@ -2,9 +2,9 @@
 import AvatarCard from "@/components/AvatarCard.vue";
 import ColorSelect from "@/components/avatar/ColorSelect.vue";
 import VariantSlider from "@/components/avatar/VariantSlider.vue";
-import { PlayerStub } from "@/model/Model";
+import type { PlayerStub } from "@/model/Model";
 import { playerService } from "@/services/PlayerService";
-import { usePlayerStore } from "@/stores/stores";
+import { useSessionStore } from "@/stores/stores";
 import { computed } from "@vue/reactivity";
 import _ from "lodash";
 import { ref, type Ref } from "vue";
@@ -27,7 +27,7 @@ const player = ref<PlayerStub>({
   }
 });
 
-const playerStore = usePlayerStore()
+const sessionStore = useSessionStore()
 const router = useRouter()
 
 const hairColors = ['aa8866', 'debe99', '241c11', '4f1a00', '9a3300'];
@@ -44,7 +44,7 @@ function onSubmit() {
 
   playerService.createOrUpdatePlayer(player.value)
     .then((player) => {
-      playerStore.currentPlayer = player
+      sessionStore.currentPlayer = player
       router.push({ name: 'game' })
     })
 }

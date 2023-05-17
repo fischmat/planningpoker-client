@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import type { GameEventListener } from '@/services/EventService';
 import { eventService } from '@/services/EventService';
 import { gameService } from '@/services/GameService';
-import type { Card, GameStub } from '@/services/Model';
+import type { Card } from '@/model/Model';
 import _ from 'lodash';
 import { computed, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useSessionStore } from '@/stores/stores';
+import { playerService } from '@/services/PlayerService';
 
 
 const router = useRouter()
+const sessionStore = useSessionStore()
 
 var name = ref('')
 var password: Ref<string | null> = ref(null)
@@ -45,7 +47,13 @@ async function onSubmit(e: any) {
   });
   console.log(`Created new game ${game.id}.`);
   eventService.enterGame(game.id!!, password.value);
-  router.push({ name: 'edit-player' })
+
+  sessionStore.currentGame = game;
+  if (await playerService.getPlayer()) {
+    router.push({ name: 'game' });
+  } else {
+    router.push({ name: 'edit-player' });
+  }
 }
 
 </script>
