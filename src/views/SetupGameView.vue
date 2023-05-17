@@ -49,7 +49,7 @@ async function onSubmit(e: any) {
   eventService.enterGame(game.id!!, password.value);
 
   sessionStore.currentGame = game;
-  sessionStore.currentGame.password = password.value || undefined;
+  sessionStore.password = password.value;
   if (await playerService.getPlayer()) {
     router.push({ name: 'game' });
   } else {

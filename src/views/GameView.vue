@@ -43,14 +43,14 @@ async function init(): Promise<any> {
   const isPlayerInGame = _.some(sessionStore.currentPlayer?.gameIds, (id) => id == sessionStore.currentGame?.id);
 
   // Check password
-  if (sessionStore.currentGame?.hasPassword && !isPlayerInGame && !sessionStore.currentGame.password) {
-      await router.push({ name: "game-password" })
+  if (sessionStore.currentGame?.hasPassword && (!isPlayerInGame || !sessionStore.password)) {
+      await router.push({ name: "game-password", query: { gameId: sessionStore.currentGame.id } })
       return
   }
 
   // Enter the game
-  sessionStore.currentPlayer = await gameService.joinGame(sessionStore.currentGame.id!!, sessionStore.currentGame.password || null)
-  await eventService.enterGame(sessionStore.currentGame.id!!, sessionStore.currentGame.password || null)
+  sessionStore.currentPlayer = await gameService.joinGame(sessionStore.currentGame.id!!, sessionStore.password || null)
+  await eventService.enterGame(sessionStore.currentGame.id!!, sessionStore.password || null)
 
   cards.value = sessionStore.currentGame?.playableCards || []
   players.value = await gameService.getPlayers(sessionStore.currentGame?.id!!); // FIXME
