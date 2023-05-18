@@ -1,6 +1,6 @@
 import { sha512 } from "js-sha512";
 import { api } from "./API";
-import type { GameStub, Game, Card, Vote, Player } from "@/model/Model";
+import type { GameStub, Game, Card, Vote, Player, Round, RoundStub } from "@/model/Model";
 
 export const gameService = {
   async createGame(gameStub: GameStub): Promise<Game> {
@@ -26,6 +26,22 @@ export const gameService = {
       headers = { Authorization: `Bearer ${token}` };
     }
     return await api.post(`/v1/games/${gameId}/players`, null, { headers });
+  },
+
+  async startRound(gameId: string, stub: RoundStub): Promise<Round> {
+    return (await api.post(`/v1/games/${gameId}/rounds`, stub)).data;
+  },
+
+  async endRound(gameId: string, roundId: string): Promise<Round> {
+    return (await api.delete(`/v1/games/${gameId}/rounds/${roundId}`)).data;
+  },
+
+  async getCurrentRound(gameId: string): Promise<Round | null> {
+    try {
+      return (await api.get(`/v1/games/${gameId}/rounds/current`)).data
+    } catch {
+      return null
+    }
   },
 
   async submitVote(gameId: string, roundId: string, card: Card): Promise<Vote> {

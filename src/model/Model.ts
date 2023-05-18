@@ -43,6 +43,10 @@ export type Round = {
     result: RoundResult
 }
 
+export type RoundStub = {
+    topic: string
+};
+
 export type Game = {
     id: string | null,
     name: string,

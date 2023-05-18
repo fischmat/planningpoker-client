@@ -51,7 +51,7 @@ async function onSubmit(e: any) {
   sessionStore.currentGame = game;
   sessionStore.password = password.value;
   if (await playerService.getPlayer()) {
-    router.push({ name: 'game' });
+    router.push({ name: 'game', query: { gameId: game.id } });
   } else {
     router.push({ name: 'edit-player' });
   }
