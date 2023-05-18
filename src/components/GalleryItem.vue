@@ -27,6 +27,16 @@ eventService.onVoteSubmitted((event) => {
   }
 });
 
+eventService.onVoteRevoked((event) => {
+  if (
+    event.gameId == sessionStore.currentGame?.id &&
+    event.round.id == sessionStore.currentRound?.id &&
+    event.vote.player.id == props.player.id
+  ) {
+    card.value = null;
+  }
+});
+
 eventService.onRoundEnded((event) => {
   if (
     event.gameId == sessionStore.currentGame?.id &&
