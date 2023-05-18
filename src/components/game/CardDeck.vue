@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import _, { type Dictionary } from "lodash";
+import _ from "lodash";
 import PokerCard from "./PokerCard.vue";
 import type { Card } from "@/model/Model";
 

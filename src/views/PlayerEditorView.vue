@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AvatarCard from "@/components/AvatarCard.vue";
+import AvatarCard from "@/components/game/AvatarCard.vue";
 import ColorSelect from "@/components/avatar/ColorSelect.vue";
 import VariantSlider from "@/components/avatar/VariantSlider.vue";
 import type { PlayerStub } from "@/model/Model";

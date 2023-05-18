@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import CardDeck from '@/components/CardDeck.vue';
-import PlayerGallery from '@/components/PlayerGallery.vue';
+import CardDeck from '@/components/game/CardDeck.vue';
+import PlayerGallery from '@/components/game/PlayerGallery.vue';
 import type { Round, Card, Game, Player, AvatarProps, RoundStub } from '@/model/Model';
 import { eventService } from '@/services/EventService';
 import { gameService } from '@/services/GameService'
 import { playerService } from '@/services/PlayerService';
 import { useSessionStore } from '@/stores/stores';
-import _, { round } from 'lodash';
+import _ from 'lodash';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Card, Player } from "@/model/Model";
-import AvatarCard from "@/components/AvatarCard.vue";
-import PokerCard from "@/components/PokerCard.vue";
+import AvatarCard from "@/components/game/AvatarCard.vue";
+import PokerCard from "@/components/game/PokerCard.vue";
 import { ref } from "vue";
 import { eventService } from "@/services/EventService";
 import { useSessionStore } from "@/stores/stores";
