@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import _ from "lodash";
+import { ref, watch } from "vue";
+import _, { type Dictionary } from "lodash";
 import PokerCard from "./PokerCard.vue";
 import type { Card } from "@/model/Model";
 
@@ -13,9 +13,7 @@ const emit = defineEmits<{
 }>();
 
 // Data
-const cardVisibility = ref(
-  _.fromPairs(_.map(props.cards, (card) => [card.value, true]))
-);
+const cardVisibility = ref(_.fromPairs(_.map(props.cards, (card) => [card.value, true])));
 const activeCard = ref<Card | undefined>(undefined);
 
 // Methods
@@ -54,6 +52,10 @@ function peekCard(card: Card, visible: boolean) {
     cardVisibility.value[card.value] = visible;
   }
 }
+
+watch(() => props.cards, (cards) => {
+  cardVisibility.value = _.fromPairs(_.map(cards, (card) => [card.value, true]))
+})
 </script>
 
 <template>
