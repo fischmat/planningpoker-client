@@ -16,6 +16,14 @@ export const eventService = {
       passwordHash: password ? sha512(password) : null
     };
     emitEvent(s, EnterGameCommandId, command);
+
+    s.on(PlayerJoinedEventId, (e: any) => { PubSub.publish(PlayerJoinedEventId, e) })
+    s.on(PlayerLeftEventId, (e: any) => { PubSub.publish(PlayerLeftEventId, e) })
+    s.on(RoundStartedEventId, (e: any) => { PubSub.publish(RoundStartedEventId, e) })
+    s.on(RoundEndedEventId, (e: any) => { PubSub.publish(RoundEndedEventId, e) })
+    s.on(VoteSubmittedEventId, (e: any) => { PubSub.publish(VoteSubmittedEventId, e) })
+    s.on(VoteRevokedEventId, (e: any) => { PubSub.publish(VoteRevokedEventId, e) })
+    s.on(ErrorEventId, (e: any) => { PubSub.publish(ErrorEventId, e) })
   },
 
   async leaveGame(gameId: string) {
@@ -45,8 +53,8 @@ export const eventService = {
     PubSub.subscribe(VoteSubmittedEventId, (_, e) => callback(e));
   },
 
-  onVoteRevoked(callback: (event: VoteSubmittedEvent) => any) {
-    PubSub.subscribe(VoteSubmittedEventId, (_, e) => callback(e));
+  onVoteRevoked(callback: (event: VoteRevokedEvent) => any) {
+    PubSub.subscribe(VoteRevokedEventId, (_, e) => callback(e));
   },
 
   onError(callback: (event: ErrorEvent) => any) {

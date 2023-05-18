@@ -21,6 +21,9 @@ eventService.onVoteSubmitted((event) => {
     event.vote.player.id == props.player.id
   ) {
     card.value = event.vote.card;
+    if (sessionStore.currentPlayer?.id == event.vote.player.id) {
+      hideCard.value = false
+    }
   }
 });
 
