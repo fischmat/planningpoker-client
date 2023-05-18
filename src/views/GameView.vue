@@ -49,8 +49,8 @@ async function init(): Promise<any> {
     await router.push({ path: "/" })
     return
   }
-  sessionStore.currentGame = game.value = sessionStore.currentGame
-  sessionStore.currentRound = round.value = await gameService.getCurrentRound(game.value.id!!)
+  game.value = sessionStore.currentGame
+  round.value = await gameService.getCurrentRound(game.value.id!!)
 
   // Set player
   const playerOrNull = await playerService.getPlayer()
@@ -58,7 +58,11 @@ async function init(): Promise<any> {
     await router.push({ name: 'edit-player' });
     return
   }
-  sessionStore.currentPlayer = player.value = playerOrNull
+  player.value = playerOrNull
+
+  // Set state
+  sessionStore.currentRound = round.value
+  sessionStore.currentPlayer = player.value
 
   const isPlayerInGame = _.some(player.value.gameIds, (id) => id == game.value?.id);
 
