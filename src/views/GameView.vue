@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import CardDeck from '@/components/game/CardDeck.vue';
 import PlayerGallery from '@/components/game/PlayerGallery.vue';
-import type { Round, Card, Game, Player, AvatarProps, RoundStub } from '@/model/Model';
+import RoundResults from '@/components/game/RoundResults.vue';
+import type { Round, Card, Game, Player, AvatarProps, RoundStub, RoundResult } from '@/model/Model';
 import { eventService } from '@/services/EventService';
 import { gameService } from '@/services/GameService'
 import { playerService } from '@/services/PlayerService';
@@ -13,6 +14,7 @@ import { useRoute, useRouter } from 'vue-router';
 const game = ref<Game>({ id: null, name: '', playableCards: [], hasPassword: false })
 const round = ref<Round | null>(null)
 const roundStub = ref<RoundStub>({ topic: '' })
+const roundResult = ref<RoundResult | null>(null)
 const player = ref<Player>({ id: '', name: '', gameIds: [], avatar: {} as AvatarProps })
 const cards = ref<Card[]>([]);
 const players = ref<Player[]>([])
@@ -27,6 +29,11 @@ const route = useRoute()
 
 async function startRound() {
   round.value = await gameService.startRound(game.value.id!!, roundStub.value)
+}
+
+async function endRound() {
+  roundResult.value = (await gameService.endRound(game.value.id!!, round.value?.id!!)).result
+  round.value = null;
 }
 
 // -------------
@@ -135,11 +142,15 @@ function onCardPlayed(card: Card | undefined) {
 <template>
   <div>
     <div class="title-container">
-      <h1>{{ game.name }}</h1>
+      <h1 id="game-title">{{ game.name }}</h1>
       <h2 v-if="round?.topic">{{ round.topic }}</h2>
+      <button v-if="round" class="btn btn-danger end-round-btn" @click="endRound">End round</button> 
     </div>
-    <div class="board">
+    <div v-if="round && !round.ended" class="board">
       <PlayerGallery :players="players" />
+    </div>
+    <div class="container" v-if="!round && roundResult">
+      <RoundResults class="results" :results="roundResult" />
     </div>
     <div v-if="!round" class="topic-container">
       <div>
@@ -165,9 +176,12 @@ function onCardPlayed(card: Card | undefined) {
 }
 
 .topic-container {
+  position: absolute;
   width: 100%;
   margin-top: 5px;
   text-align: center;
+  bottom: 0;
+  padding-bottom: 20px;
 }
 
 .topic-input {

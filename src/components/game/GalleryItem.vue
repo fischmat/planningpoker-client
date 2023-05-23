@@ -7,12 +7,16 @@ import { eventService } from "@/services/EventService";
 import { useSessionStore } from "@/stores/stores";
 
 const props = defineProps<{
-  player: Player;
+  player: Player
+  card?: Card,
+  hidden?: boolean,
+  minBadge?: boolean,
+  maxBadge?: boolean
 }>();
 const sessionStore = useSessionStore()
 
-const card = ref<Card | null>(null);
-const hideCard = ref<boolean>(true);
+const card = ref<Card | null>(props.card || null);
+const hideCard = ref<boolean>(props.hidden !== false);
 
 eventService.onVoteSubmitted((event) => {
   if (
@@ -63,6 +67,8 @@ eventService.onRoundStarted((event) => {
     <div class="avatar-container">
       <AvatarCard :avatar="player.avatar" />
       <span class="name">{{ player.name }}</span>
+      <span v-if="minBadge" class="badge badge-min">Minimum</span>
+      <span v-if="maxBadge" class="badge badge-max">Maximum</span>
     </div>
     <div>
       <PokerCard v-if="card" :card="card" :hidden="hideCard" />
@@ -86,6 +92,18 @@ eventService.onRoundStarted((event) => {
   font-weight: 500;
   color: #444;
 }
+.badge {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.badge-min {
+  background-color: #008000;
+}
+.badge-max {
+  background-color: #ff0000;
+}
+
 
 .card {
   width: 70px;

@@ -80,7 +80,7 @@ init()
               <div class="form-group" style="display: inline-block">
                 <label>Your name:</label>
                 <div class="input-group flex-nowrap">
-                  <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                  <input id="player-name" type="text" class="form-control" placeholder="Username" aria-label="Username"
                     aria-describedby="addon-wrapping" v-model="player.name" />
                 </div>
                 <div class="invalid-feedback" :style="{ 'display': !isValid && isToched ? 'block' : 'none' }">
@@ -113,7 +113,7 @@ init()
       </div>
       <br>
       <div>
-        <button class="btn btn-primary" @click="onSubmit">Let's go</button>
+        <button id="submit-player" class="btn btn-primary" @click="onSubmit">Let's go</button>
       </div>
     </div>
   </div>

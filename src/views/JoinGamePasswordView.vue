@@ -56,7 +56,7 @@ async function init() {
           <label>Password:</label>
           <div class="input-group flex-nowrap">
             <span class="input-group-text" id="addon-wrapping">🔒</span>
-            <input type="password" v-model="password" class="form-control" placeholder="Password" aria-label="Password"
+            <input id="game-password" type="password" v-model="password" class="form-control" placeholder="Password" aria-label="Password"
               aria-describedby="addon-wrapping" />
           </div>
           <div class="invalid-feedback" :style="{ 'display': !passwordValid ? 'block' : 'none' }">

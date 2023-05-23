@@ -14,7 +14,7 @@ const sessionStore = useSessionStore()
 
 var name = ref('')
 var password: Ref<string | null> = ref(null)
-var playableCards: Ref<Card[] |  []> = ref([{ value: 1 }, { value: 2 }, { value: 3 }, { value: 5 }, { value: 8 }, { value: 13 }, { value: 21 }])
+var playableCards: Ref<Card[] | []> = ref([{ value: 1 }, { value: 2 }, { value: 3 }, { value: 5 }, { value: 8 }, { value: 13 }, { value: 21 }])
 
 const cardsString = computed(() => {
   return _.join(playableCards.value.map((c) => c.value), ', ')
@@ -67,8 +67,8 @@ async function onSubmit(e: any) {
         <label>Session name:</label>
         <div class="input-group flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">♣</span>
-          <input type="text" v-model="name" class="form-control" placeholder="Session name" aria-label="Session name"
-            aria-describedby="addon-wrapping" />
+          <input id="session-name" type="text" v-model="name" class="form-control" placeholder="Session name"
+            aria-label="Session name" aria-describedby="addon-wrapping" />
         </div>
       </div>
 
@@ -76,8 +76,8 @@ async function onSubmit(e: any) {
         <label>Password (optional):</label>
         <div class="input-group flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">🔒</span>
-          <input type="text" v-model="password" class="form-control" placeholder="Password" aria-label="Password"
-            aria-describedby="addon-wrapping" />
+          <input id="session-password" type="text" v-model="password" class="form-control" placeholder="Password"
+            aria-label="Password" aria-describedby="addon-wrapping" />
         </div>
       </div>
 
@@ -85,13 +85,13 @@ async function onSubmit(e: any) {
         <label>Cards:</label>
         <div class="input-group flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">🔢</span>
-          <input type="text" class="form-control" placeholder="Password" aria-label="Password"
+          <input id="session-cards" type="text" class="form-control" placeholder="Cards" aria-label="Cards"
             aria-describedby="addon-wrapping" :value="cardsString" @change="onCardStringChanged($event)" />
         </div>
       </div>
 
       <div>
-        <button :disabled="!isValid" class="btn btn-primary" @click="onSubmit">Start</button>
+        <button id="session-submit" :disabled="!isValid" class="btn btn-primary" @click="onSubmit">Start</button>
       </div>
     </div>
   </div>
