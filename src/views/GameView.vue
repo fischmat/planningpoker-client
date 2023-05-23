@@ -87,9 +87,9 @@ async function init(): Promise<any> {
   players.value = await gameService.getPlayers(game.value?.id!!)
 
   // Register for events
-  eventService.onPlayerJoined((event) => {
+  eventService.onPlayerJoined(async (event) => {
     if (event.gameId == game.value?.id) {
-      players.value.push(event.player);
+      players.value = await gameService.getPlayers(game.value?.id!!)
     }
   });
   eventService.onPlayerLeft((event) => {
