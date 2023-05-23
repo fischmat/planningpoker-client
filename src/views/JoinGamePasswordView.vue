@@ -38,9 +38,13 @@ async function init() {
 
   if (!playerService.getPlayer()) {
     await router.push({ name: 'edit-player' })
-    return
   }
 }
+
+init()
+  .then(() => console.log("Page initialized!"))
+  .catch((e) => console.error("Failed to initialize page.", e))
+
 </script>
 
 
