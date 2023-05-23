@@ -57,7 +57,6 @@ async function init(): Promise<any> {
     return
   }
   game.value = sessionStore.currentGame
-  round.value = await gameService.getCurrentRound(game.value.id!!)
 
   // Set player
   const playerOrNull = await playerService.getPlayer()
@@ -66,9 +65,6 @@ async function init(): Promise<any> {
     return
   }
   player.value = playerOrNull
-
-  // Set state
-  sessionStore.currentRound = round.value
   sessionStore.currentPlayer = player.value
 
   const isPlayerInGame = _.some(player.value.gameIds, (id) => id == game.value?.id);
@@ -82,6 +78,10 @@ async function init(): Promise<any> {
   // Enter the game
   player.value = await gameService.joinGame(game.value.id!!, sessionStore.password || null)
   await eventService.enterGame(game.value.id!!, sessionStore.password || null)
+
+  // Get current round
+  round.value = await gameService.getCurrentRound(game.value.id!!)
+  sessionStore.currentRound = round.value
 
   cards.value = game.value?.playableCards || []
   players.value = await gameService.getPlayers(game.value?.id!!)

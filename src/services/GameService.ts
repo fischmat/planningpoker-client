@@ -25,7 +25,7 @@ export const gameService = {
       const token = sha512(password);
       headers = { Authorization: `Bearer ${token}` };
     }
-    return await api.post(`/v1/games/${gameId}/players`, null, { headers });
+    return (await api.post(`/v1/games/${gameId}/players`, null, { headers })).data;
   },
 
   async startRound(gameId: string, stub: RoundStub): Promise<Round> {
