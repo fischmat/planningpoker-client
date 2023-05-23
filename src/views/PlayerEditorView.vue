@@ -45,6 +45,8 @@ function onSubmit() {
   playerService.createOrUpdatePlayer(player.value)
     .then((player) => {
       sessionStore.currentPlayer = player
+      sessionStore.persistPlayer()
+      
       if (sessionStore.currentGame != null) {
         router.push({ name: 'game', query: { gameId: sessionStore.currentGame.id } })
       } else {

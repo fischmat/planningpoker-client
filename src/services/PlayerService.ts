@@ -1,9 +1,18 @@
 import _ from "lodash";
 import { api, apiBaseUrl } from "./API";
 import type { ApplicationInfo, AvatarProps, Player, PlayerStub } from "@/model/Model";
+import { useSessionStore } from "@/stores/stores";
+
+const sessionStore = useSessionStore()
 
 export const playerService = {
   async getPlayer(): Promise<Player | null> {
+    // Try to reprovision player from stored stub
+    const reprovisioned = await this.tryReprovisionPlayer()
+    if (reprovisioned) {
+      return reprovisioned
+    }
+
     try {
       return (await api.get('/v1/players/me')).data
     } catch {
@@ -44,4 +53,16 @@ export const playerService = {
 
     return `${apiBaseUrl}/v1/players/avatar/preview?${queryString}`;
   },
+
+  async tryReprovisionPlayer(): Promise<Player | null> {
+    const stub = sessionStore.persistedPlayerStub()
+    if (!stub) {
+      return null
+    }
+    try {
+      return await this.createOrUpdatePlayer(stub)
+    } catch {
+      return null
+    }
+  }
 };
