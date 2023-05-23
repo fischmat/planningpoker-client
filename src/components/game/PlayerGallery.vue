@@ -12,7 +12,7 @@ const props = defineProps<{
   <div class="gallery">
     <div class="row">
         <div v-for="player in players" v-bind:key="player.name" class="col-4">
-            <GalleryItem :player="player" />
+            <GalleryItem :player="player" :hidden="true" />
         </div>
     </div>
   </div>
