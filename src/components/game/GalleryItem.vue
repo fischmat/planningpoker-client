@@ -2,7 +2,7 @@
 import type { Card, Player } from "@/model/Model";
 import AvatarCard from "@/components/game/AvatarCard.vue";
 import PokerCard from "@/components/game/PokerCard.vue";
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import { eventService } from "@/services/EventService";
 import { useSessionStore } from "@/stores/stores";
 
@@ -15,51 +15,9 @@ const props = defineProps<{
 }>();
 const sessionStore = useSessionStore()
 
-const card = ref<Card | null>(props.card || null);
+const { player, card, hidden, minBadge, maxBadge } = toRefs(props)
+
 const hideCard = ref<boolean>(props.hidden !== false);
-
-eventService.onVoteSubmitted((event) => {
-  if (
-    event.gameId == sessionStore.currentGame?.id &&
-    event.round.id == sessionStore.currentRound?.id &&
-    event.vote.player.id == props.player.id
-  ) {
-    card.value = event.vote.card;
-    if (sessionStore.currentPlayer?.id == event.vote.player.id) {
-      hideCard.value = false
-    }
-  }
-});
-
-eventService.onVoteRevoked((event) => {
-  if (
-    event.gameId == sessionStore.currentGame?.id &&
-    event.round.id == sessionStore.currentRound?.id &&
-    event.vote.player.id == props.player.id
-  ) {
-    card.value = null;
-  }
-});
-
-eventService.onRoundEnded((event) => {
-  if (
-    event.gameId == sessionStore.currentGame?.id &&
-    event.round.id == sessionStore.currentRound?.id
-  ) {
-    hideCard.value = false;
-  }
-});
-
-eventService.onRoundStarted((event) => {
-  if (
-    event.gameId == sessionStore.currentGame?.id &&
-    event.round.id == sessionStore.currentRound?.id
-  ) {
-    hideCard.value = true;
-    card.value = null;
-  }
-});
-
 </script>
 
 <template>

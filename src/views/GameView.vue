@@ -2,7 +2,7 @@
 import CardDeck from '@/components/game/CardDeck.vue';
 import PlayerGallery from '@/components/game/PlayerGallery.vue';
 import RoundResults from '@/components/game/RoundResults.vue';
-import type { Round, Card, Game, Player, AvatarProps, RoundStub, RoundResult } from '@/model/Model';
+import type { Round, Card, Game, Player, AvatarProps, RoundStub, RoundResult, Vote } from '@/model/Model';
 import { eventService } from '@/services/EventService';
 import { gameService } from '@/services/GameService'
 import { playerService } from '@/services/PlayerService';
@@ -18,6 +18,7 @@ const roundResult = ref<RoundResult | null>(null)
 const player = ref<Player>({ id: '', name: '', gameIds: [], avatar: {} as AvatarProps })
 const cards = ref<Card[]>([]);
 const players = ref<Player[]>([])
+const votes = ref<Vote[]>([])
 
 const sessionStore = useSessionStore()
 const router = useRouter()
@@ -83,6 +84,11 @@ async function init(): Promise<any> {
   round.value = await gameService.getCurrentRound(game.value.id!!)
   sessionStore.currentRound = round.value
 
+  // Get votes
+  if (round.value) {
+    votes.value = await gameService.getVotes(game.value.id!!, round.value.id!!)
+  }
+
   cards.value = game.value?.playableCards || []
   players.value = await gameService.getPlayers(game.value?.id!!)
 
@@ -102,6 +108,18 @@ async function init(): Promise<any> {
   });
   eventService.onRoundEnded((event) => {
     round.value = null
+    votes.value = []
+  });
+  eventService.onVoteSubmitted(async () => {
+    if (game.value.id != null && round.value?.id != null) {
+      votes.value = await gameService.getVotes(game.value.id, round.value?.id!!)
+      console.log("votes", votes.value)
+    }
+  });
+  eventService.onVoteRevoked(async () => {
+    if (game.value.id != null && round.value?.id != null) {
+      votes.value = await gameService.getVotes(game.value.id, round.value?.id!!)
+    }
   });
 
   watch(game, (newGame) => {
@@ -147,7 +165,7 @@ function onCardPlayed(card: Card | undefined) {
       <button v-if="round" class="btn btn-danger end-round-btn" @click="endRound">End round</button> 
     </div>
     <div v-if="round && !round.ended" class="board">
-      <PlayerGallery :players="players" />
+      <PlayerGallery :players="players" :votes="votes" />
     </div>
     <div class="container" v-if="!round && roundResult">
       <RoundResults class="results" :results="roundResult" />

@@ -52,4 +52,8 @@ export const gameService = {
   async revokeVote(gameId: string, roundId: string): Promise<any> {
     return await api.delete(`/v1/games/${gameId}/rounds/${roundId}/votes/mine`);
   },
+
+  async getVotes(gameId: string, roundId: string): Promise<Vote[]> {
+    return (await api.get(`/v1/games/${gameId}/rounds/${roundId}/votes`)).data;
+  }
 };
