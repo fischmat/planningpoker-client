@@ -7,8 +7,10 @@ RUN npm run build
 FROM nginx:1.24.0-alpine3.17@sha256:1fc79d650e6aa16683ab887298874842f46e6c3738b01d8d82fc88053eda1905
 LABEL Author="github@matthias-fisch.de"
 EXPOSE 80
+ENV BASE_PATH ""
 
 COPY --from=build /build/dist /usr/share/nginx/html
 WORKDIR /usr/share/nginx/html
 RUN chown -R 101:101 /usr/share/nginx/html
+RUN sed -i "s/###BASE_PATH###/${BASE_PATH}/g" /usr/share/nginx/html/assets/*
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

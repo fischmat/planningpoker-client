@@ -3,7 +3,7 @@ import { wrapper } from "axios-cookiejar-support";
 import { CookieJar } from "tough-cookie";
 
 export const apiBaseUrl =
-  process.env.NODE_ENV === "development" ? "http://localhost:8080/api" : "/api";
+  process.env.NODE_ENV === "development" ? "http://localhost:8080/api" : "###BASE_PATH###/api";
 
 export const jar = new CookieJar();
 export const api = wrapper(
