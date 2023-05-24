@@ -4,11 +4,13 @@ on:
   push:
     tags:
       - 'v*'
+env:
+  VERSION: ${{ github.ref_name }}
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - run: docker build -t docker.matthias-fisch.de/poker-client:{{ github.ref_name }}
-      - run: docker push docker.matthias-fisch.de/poker-client:{{ github.ref_name }}
+      - run: docker build -t "docker.matthias-fisch.de/poker-client:$VERSION" .
+      - run: docker push "docker.matthias-fisch.de/poker-client:$VERSION"
