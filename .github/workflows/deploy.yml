@@ -1,0 +1,14 @@
+name: Create release image and deploy
+run-name: Release and reploy ${{ github.ref_name }}
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: docker build -t docker.matthias-fisch.de/poker-client:{{ github.ref_name }}
+      - run: docker push docker.matthias-fisch.de/poker-client:{{ github.ref_name }}
