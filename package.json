@@ -31,6 +31,7 @@
     "@types/lodash": "^4.14.192",
     "@types/node": "^18.14.0",
     "@types/pubsub-js": "^1.8.3",
+    "@types/socket.io-client": "^3.0.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/test-utils": "^2.3.0",
     "@vue/tsconfig": "^0.1.3",
