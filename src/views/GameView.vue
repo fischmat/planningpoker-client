@@ -33,7 +33,7 @@ async function startRound() {
 }
 
 async function endRound() {
-  roundResult.value = (await gameService.endRound(game.value.id!!, round.value?.id!!)).result
+  await gameService.endRound(game.value.id!!, round.value?.id!!)
   round.value = null;
 }
 
@@ -106,14 +106,16 @@ async function init(): Promise<any> {
   eventService.onRoundStarted((event) => {
     round.value = event.round
   });
-  eventService.onRoundEnded((event) => {
-    round.value = null
-    votes.value = []
+  eventService.onRoundEnded(async (event) => {
+    if (event.gameId == game.value.id && event.round.id == round.value?.id) {
+      round.value = null
+      votes.value = []
+      roundResult.value = await gameService.getRoundResults(event.gameId, event.round.id!!)
+    }
   });
   eventService.onVoteSubmitted(async () => {
     if (game.value.id != null && round.value?.id != null) {
       votes.value = await gameService.getVotes(game.value.id, round.value?.id!!)
-      console.log("votes", votes.value)
     }
   });
   eventService.onVoteRevoked(async () => {
@@ -162,7 +164,7 @@ function onCardPlayed(card: Card | undefined) {
     <div class="title-container">
       <h1 id="game-title">{{ game.name }}</h1>
       <h2 v-if="round?.topic">{{ round.topic }}</h2>
-      <button v-if="round" class="btn btn-danger end-round-btn" @click="endRound">End round</button> 
+      <button v-if="round" class="btn btn-danger end-round-btn" @click="endRound">End round</button>
     </div>
     <div v-if="round && !round.ended" class="board">
       <PlayerGallery :players="players" :votes="votes" />

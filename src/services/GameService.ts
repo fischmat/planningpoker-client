@@ -1,6 +1,6 @@
 import { sha512 } from "js-sha512";
 import { api } from "./API";
-import type { GameStub, Game, Card, Vote, Player, Round, RoundStub } from "@/model/Model";
+import type { GameStub, Game, Card, Vote, Player, Round, RoundStub, RoundResult } from "@/model/Model";
 
 export const gameService = {
   async createGame(gameStub: GameStub): Promise<Game> {
@@ -34,6 +34,10 @@ export const gameService = {
 
   async endRound(gameId: string, roundId: string): Promise<Round> {
     return (await api.delete(`/v1/games/${gameId}/rounds/${roundId}`)).data;
+  },
+
+  async getRoundResults(gameId: string, roundId: string): Promise<RoundResult> {
+    return (await api.get(`/v1/games/${gameId}/rounds/${roundId}/results`)).data
   },
 
   async getCurrentRound(gameId: string): Promise<Round | null> {
