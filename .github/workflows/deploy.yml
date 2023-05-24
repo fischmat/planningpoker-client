@@ -13,4 +13,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: docker build -t "docker.matthias-fisch.de/poker-client:$VERSION" .
+      - env:
+          DOCKER_SECRET: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u github -p "$DOCKER_SECRET" docker.matthias-fisch.de
       - run: docker push "docker.matthias-fisch.de/poker-client:$VERSION"
