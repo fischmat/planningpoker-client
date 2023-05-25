@@ -65,7 +65,7 @@ export const eventService = {
 async function createSocket(): Promise<any> {
   const config = (await infoService.getInfo()).socketIO;
   const socket = io(
-    `ws://${config.host}:${config.port}`
+    `${config.scheme}://${config.host}:${config.port}`
   );
   socket.on("connect", () => {
     console.log("Socket.IO connection established.");

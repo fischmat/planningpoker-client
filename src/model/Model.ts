@@ -67,7 +67,8 @@ export type GameStub = {
 export type ApplicationInfo = {
     socketIO: {
         host: string,
-        port: number
+        port: number,
+        scheme: string
     }
 }
 
