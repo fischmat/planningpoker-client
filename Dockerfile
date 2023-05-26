@@ -10,6 +10,7 @@ EXPOSE 80
 ENV BASE_PATH ""
 
 COPY --from=build /build/dist /usr/share/nginx/html
+COPY docker/default.conf /etc/nginx/conf.d/default.conf
 WORKDIR /usr/share/nginx/html
 RUN chown -R 101:101 /usr/share/nginx/html
 RUN sed -i "s/###BASE_PATH###/${BASE_PATH}/g" /usr/share/nginx/html/assets/*
