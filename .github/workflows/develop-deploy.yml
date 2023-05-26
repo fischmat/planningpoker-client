@@ -15,7 +15,7 @@ jobs:
           REPOSITORY: "docker.matthias-fisch.de/poker-client"
           DOCKER_SECRET: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-          TAG=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
+          TAG=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | cut -d' ' -f 2)
           IMAGE_NAME="$REPOSITORY:$TAG"
           echo "Image will be available as $IMAGE_NAME."
           docker build -t "$IMAGE_NAME" .
