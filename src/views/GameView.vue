@@ -71,7 +71,7 @@ async function init(): Promise<any> {
   const isPlayerInGame = _.some(player.value.gameIds, (id) => id == game.value?.id);
 
   // Check password
-  if (game.value?.hasPassword && (!isPlayerInGame || !sessionStore.password)) {
+  if (game.value?.hasPassword && !isPlayerInGame && !sessionStore.password) {
     await router.push({ name: "game-password", query: { gameId: game.value.id } })
     return
   }
