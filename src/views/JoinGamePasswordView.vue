@@ -63,13 +63,13 @@ init()
             <input id="game-password" type="password" v-model="password" class="form-control" placeholder="Password" aria-label="Password"
               aria-describedby="addon-wrapping" />
           </div>
-          <div class="invalid-feedback" :style="{ 'display': !passwordValid ? 'block' : 'none' }">
+          <div id="wrong-password-box" class="invalid-feedback" :style="{ 'display': !passwordValid ? 'block' : 'none' }">
             The provided password is wrong.
           </div>
         </div>
       </div>
       <div>
-        <button class="btn btn-primary" @click="onSubmit">Enter</button>
+        <button id="submit" class="btn btn-primary" @click="onSubmit">Enter</button>
       </div>
     </div>
   </div>
