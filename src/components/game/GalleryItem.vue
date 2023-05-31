@@ -27,20 +27,18 @@ const hideCard = ref<boolean>(props.hidden !== false);
       <span class="name">{{ player.name }}</span>
       <span v-if="minBadge" class="badge badge-min">Minimum</span>
       <span v-if="maxBadge" class="badge badge-max">Maximum</span>
+      <PokerCard class="card" v-if="card" :card="card" :hidden="hideCard" />
     </div>
     <div>
-      <PokerCard v-if="card" :card="card" :hidden="hideCard" />
+      
     </div>
   </div>
 </template>
 
 <style scoped>
-.player {
-  position: absolute;
-}
-
 .avatar-container {
   width: 150px;
+  position: relative;
 }
 
 .name {
@@ -67,8 +65,8 @@ const hideCard = ref<boolean>(props.hidden !== false);
   width: 70px;
   height: 100px;
   position: absolute;
-  top: 0;
-  right: -60px;
+  top: -20px;
+  right: -35px;
   rotate: 10deg;
 }
 </style>

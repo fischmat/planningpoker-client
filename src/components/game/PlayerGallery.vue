@@ -29,7 +29,7 @@ function playerCardHidden(player: Player): boolean {
 <template>
   <div class="gallery">
     <div class="row">
-        <div v-for="player in players" v-bind:key="player.name" class="col-4">
+        <div v-for="player in players" v-bind:key="player.name" class="item col-3">
             <GalleryItem :player="player" :card="playerCard(player)" :hidden="playerCardHidden(player)" />
         </div>
     </div>
@@ -39,5 +39,9 @@ function playerCardHidden(player: Player): boolean {
 <style scoped>
 .gallery {
     height: 100%;
+}
+
+.item {
+  padding: 20px;
 }
 </style>
