@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import _ from 'lodash';
 import { computed, ref } from 'vue';
 
 const props = defineProps<{
     colors: string[],
-    label: string
+    label: string,
+    initialValue?: string
 }>()
 
 const emit = defineEmits<{
   (e: "change", value: string): void;
 }>();
 
-const variantIndex = ref(0)
+const variantIndex = ref(props.initialValue ? _.indexOf(props.colors, props.initialValue) : 0)
 const color = computed(() => props.colors[variantIndex.value % props.colors.length])
 
 function prevVariant() {

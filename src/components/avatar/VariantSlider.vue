@@ -4,6 +4,7 @@ import { computed, ref } from 'vue';
 const props = defineProps<{
     max: number,
     label: string,
+    initialValue?: number | null,
     variantLabel?: string,
     noneOption?: boolean
 }>()
@@ -12,7 +13,7 @@ const emit = defineEmits<{
   (e: "change", value: number | null): void;
 }>();
 
-const variantNum = ref(1)
+const variantNum = ref(props.initialValue || 1)
 const firstIndex = !props.noneOption ? 1 : 0
 
 const variantLabel = computed(() => {

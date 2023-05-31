@@ -54,6 +54,25 @@ export const playerService = {
     return `${apiBaseUrl}/v1/players/avatar/preview?${queryString}`;
   },
 
+  getRandomAvatarProps(): AvatarProps {
+    const longHair = _.random(1, 2) % 2 == 0;
+    const hairColor = _.shuffle(['aa8866', 'debe99', '241c11', '4f1a00', '9a3300'])[0];
+    const skinColor = _.shuffle(['ffdbac', 'f1c27d', 'e0ac69', 'c68642', '8d5524'])[0];
+    return {
+      backgroundColor: "transparent",
+      earrings: _.random(1, 6),
+      eyebrows: _.random(1, 15),
+      eyes: _.random(1, 26),
+      features: [],
+      glasses: _.random(1, 5),
+      hair: longHair ? _.random(1, 26) : _.random(1, 19),
+      longHair: longHair,
+      hairColor: hairColor,
+      mouth: _.random(1, 30),
+      skinColor: skinColor
+    };
+  },
+
   async tryReprovisionPlayer(): Promise<Player | null> {
     const stub = sessionStore.persistedPlayerStub()
     if (!stub) {

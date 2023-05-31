@@ -12,19 +12,7 @@ import { useRouter } from "vue-router";
 
 const player = ref<PlayerStub>({
   name: "",
-  avatar: {
-    backgroundColor: "transparent",
-    earrings: null,
-    eyebrows: 1,
-    eyes: 1,
-    features: [],
-    glasses: null,
-    hair: 1,
-    longHair: false,
-    hairColor: "000000",
-    mouth: 1,
-    skinColor: "ffdbac"
-  }
+  avatar: playerService.getRandomAvatarProps()
 });
 
 const sessionStore = useSessionStore()
@@ -46,7 +34,7 @@ function onSubmit() {
     .then((player) => {
       sessionStore.currentPlayer = player
       sessionStore.persistPlayer()
-      
+
       if (sessionStore.currentGame != null) {
         router.push({ name: 'game', query: { gameId: sessionStore.currentGame.id } })
       } else {
@@ -98,22 +86,24 @@ init()
         </div>
 
         <div class="col">
-          <VariantSlider label="Eyes" :max="26" variant-label="Eyes Variant"
+          <VariantSlider label="Eyes" :initial-value="player.avatar?.eyes" :max="26" variant-label="Eyes Variant"
             @change="$v => player.avatar!!.eyes = $v!!" />
-          <VariantSlider label="Eyebrows" variant-label="Eyebrow Variant" :max="15"
-            @change="$v => player.avatar!!.eyebrows = $v!!" />
-          <VariantSlider label="Mouth" variant-label="Mouth Variant" :max="30"
+          <VariantSlider label="Eyebrows" :initial-value="player.avatar?.eyebrows" variant-label="Eyebrow Variant"
+            :max="15" @change="$v => player.avatar!!.eyebrows = $v!!" />
+          <VariantSlider label="Mouth" :initial-value="player.avatar?.mouth" variant-label="Mouth Variant" :max="30"
             @change="$v => player.avatar!!.mouth = $v!!" />
-          <VariantSlider label="Earrings" variant-label="Earring Type" :max="6" :noneOption="true"
-            @change="$v => player.avatar!!.earrings = $v" />
-          <ColorSelect label="Hair Color" :colors="hairColors" @change="$v => player.avatar!!.hairColor = $v" />
-          <VariantSlider label="Hair Length" variant-label="Hair Length" :max="2"
-            @change="$v => { player.avatar!!.longHair = ($v == 2); player.avatar!!.hair = 1; }" />
-          <VariantSlider label="Hair Style" :max="19" variant-label="Hair Variant" :noneOption="true"
-            @change="$v => player.avatar!!.hair = $v" />
-          <VariantSlider label="Glasses" :max="5" variant-label="Glasses" :noneOption="true"
-            @change="$v => player.avatar!!.glasses = $v" />
-          <ColorSelect label="Skin Color" :colors="skinColors" @change="$v => player.avatar!!.skinColor = $v" />
+          <VariantSlider label="Earrings" :initial-value="player.avatar?.earrings" variant-label="Earring Type" :max="6"
+            :noneOption="true" @change="$v => player.avatar!!.earrings = $v" />
+          <ColorSelect label="Hair Color" :initial-value="player.avatar?.hairColor" :colors="hairColors"
+            @change="$v => player.avatar!!.hairColor = $v" />
+          <VariantSlider label="Hair Length" :initial-value="player.avatar?.longHair ? 2 : 1" variant-label="Hair Length"
+            :max="2" @change="$v => { player.avatar!!.longHair = ($v == 2); player.avatar!!.hair = 1; }" />
+          <VariantSlider label="Hair Style" :initial-value="player.avatar?.hair" :max="19" variant-label="Hair Variant"
+            :noneOption="true" @change="$v => player.avatar!!.hair = $v" />
+          <VariantSlider label="Glasses" :initial-value="player.avatar?.glasses" :max="5" variant-label="Glasses"
+            :noneOption="true" @change="$v => player.avatar!!.glasses = $v" />
+          <ColorSelect label="Skin Color" :initial-value="player.avatar?.skinColor" :colors="skinColors"
+            @change="$v => player.avatar!!.skinColor = $v" />
         </div>
 
       </div>
