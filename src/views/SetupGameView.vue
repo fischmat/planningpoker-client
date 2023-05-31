@@ -15,6 +15,7 @@ const sessionStore = useSessionStore()
 var name = ref('')
 var password: Ref<string | null> = ref(null)
 var playableCards: Ref<Card[] | []> = ref([{ value: 1 }, { value: 2 }, { value: 3 }, { value: 5 }, { value: 8 }, { value: 13 }, { value: 21 }])
+const cardIcon = ref<File | null>()
 
 const cardsString = computed(() => {
   return _.join(playableCards.value.map((c) => c.value), ', ')
@@ -48,6 +49,10 @@ async function onSubmit(e: any) {
   console.log(`Created new game ${game.id}.`);
   eventService.enterGame(game.id!!, password.value);
 
+  if (cardIcon.value) {
+    gameService.uploadCardIcon(game.id!!, cardIcon.value)
+  }
+
   sessionStore.currentGame = game;
   sessionStore.password = password.value;
   if (await playerService.getPlayer()) {
@@ -55,6 +60,10 @@ async function onSubmit(e: any) {
   } else {
     router.push({ name: 'edit-player' });
   }
+}
+
+async function onCardIconSelected(e: any) {
+  cardIcon.value = e.target.files[0]
 }
 
 </script>
@@ -88,6 +97,12 @@ async function onSubmit(e: any) {
           <input id="session-cards" type="text" class="form-control" placeholder="Cards" aria-label="Cards"
             aria-describedby="addon-wrapping" :value="cardsString" @change="onCardStringChanged($event)" />
         </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="card-icon-file" class="form-label">Card Icon (optional)</label>
+        <input class="form-control form-control-sm" id="card-icon-file" accept=".jpg,.jpeg,.bmp,.png,.webp,.tiff" type="file"
+          @change="onCardIconSelected">
       </div>
 
       <div>

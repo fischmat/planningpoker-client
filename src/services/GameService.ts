@@ -67,5 +67,12 @@ export const gameService = {
 
   getCardIconUrl(gameId: string): string {
     return `${apiBaseUrl}/v1/games/${gameId}/theme/card-icon`;
+  },
+
+  async uploadCardIcon(gameId: string, file: File) {
+    const formData = new FormData()
+    formData.append("file", file)
+    const headers = { 'Content-Type': 'multipart/form-data' }
+    await api.post(`${apiBaseUrl}/v1/games/${gameId}/theme/card-icon`, formData, { headers: headers })
   }
 };
