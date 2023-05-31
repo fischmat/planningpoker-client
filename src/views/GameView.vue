@@ -7,12 +7,14 @@ import { eventService } from '@/services/EventService';
 import { gameService } from '@/services/GameService'
 import { playerService } from '@/services/PlayerService';
 import { useSessionStore } from '@/stores/stores';
+import { computed } from '@vue/reactivity';
 import _ from 'lodash';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const game = ref<Game>({ id: null, name: '', playableCards: [], hasPassword: false })
 const round = ref<Round | null>(null)
+const rounds = ref<Round[]>([])
 const roundStub = ref<RoundStub>({ topic: '' })
 const roundResult = ref<RoundResult | null>(null)
 const player = ref<Player>({ id: '', name: '', gameIds: [], avatar: {} as AvatarProps })
@@ -37,6 +39,24 @@ async function endRound() {
   round.value = null;
 }
 
+function setPageTitle(game: Game) {
+  document.title = `${game.name} - Planning Poker`
+}
+
+// -------------
+// Computed
+// -------------
+
+const topic = computed(() => {
+  if (round.value?.topic) {
+    return round.value?.topic
+  } else if (rounds.value.length > 0) {
+    return `${game.value.name} - Round #${rounds.value.length}`
+  } else {
+    return ""
+  }
+})
+
 // -------------
 // Initalization
 // -------------
@@ -58,6 +78,7 @@ async function init(): Promise<any> {
     return
   }
   game.value = sessionStore.currentGame
+  setPageTitle(game.value)
 
   // Set player
   const playerOrNull = await playerService.getPlayer()
@@ -83,6 +104,7 @@ async function init(): Promise<any> {
   // Get current round
   round.value = await gameService.getCurrentRound(game.value.id!!)
   sessionStore.currentRound = round.value
+  rounds.value = await gameService.getRounds(game.value.id!!)
 
   // Get votes
   if (round.value) {
@@ -103,8 +125,9 @@ async function init(): Promise<any> {
       _.remove(players.value, (p) => p.id == event.player.id)
     }
   });
-  eventService.onRoundStarted((event) => {
+  eventService.onRoundStarted(async (event) => {
     round.value = event.round
+    rounds.value = await gameService.getRounds(event.gameId)
   });
   eventService.onRoundEnded(async (event) => {
     if (event.gameId == game.value.id && event.round.id == round.value?.id) {
@@ -126,6 +149,7 @@ async function init(): Promise<any> {
 
   watch(game, (newGame) => {
     sessionStore.currentGame = newGame
+    setPageTitle(newGame);
   })
   watch(player, (newPlayer) => {
     sessionStore.currentPlayer = newPlayer
@@ -161,9 +185,8 @@ function onCardPlayed(card: Card | undefined) {
 
 <template>
   <div>
-    <div class="title-container">
-      <h1 id="game-title">{{ game.name }}</h1>
-      <h2 v-if="round?.topic">{{ round.topic }}</h2>
+    <div class="round-info">
+      <h2 v-if="topic" class="topic">{{ topic }}</h2>
       <button v-if="round" class="btn btn-danger end-round-btn" @click="endRound">End round</button>
     </div>
     <div v-if="round && !round.ended" class="board">
@@ -190,9 +213,15 @@ function onCardPlayed(card: Card | undefined) {
   height: 80vh;
 }
 
-.title-container {
+.round-info {
+  width: 100%;
+  display: inline-block;
   width: 100%;
   text-align: center;
+}
+
+.round-info .topic {
+  color: #535353;
 }
 
 .topic-container {

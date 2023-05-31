@@ -36,6 +36,10 @@ export const gameService = {
     return (await api.delete(`/v1/games/${gameId}/rounds/${roundId}`)).data;
   },
 
+  async getRounds(gameId: string): Promise<Round[]> {
+    return (await api.get(`/v1/games/${gameId}/rounds`)).data;
+  },
+
   async getRoundResults(gameId: string, roundId: string): Promise<RoundResult> {
     return (await api.get(`/v1/games/${gameId}/rounds/${roundId}/results`)).data
   },
