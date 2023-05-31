@@ -5,7 +5,8 @@ import PokerCard from "./PokerCard.vue";
 import type { Card } from "@/model/Model";
 
 const props = defineProps<{
-  cards: Card[];
+  cards: Card[],
+  cardLogoUrl?: string
 }>();
 
 const emit = defineEmits<{
@@ -70,6 +71,7 @@ watch(() => props.cards, (cards) => {
             :class="{ inactive: isInactiveCard(card), active: isActiveCard(card) }"
             :hidden="isHidden(card)"
             :card="card"
+            :card-logo-url="cardLogoUrl"
             @click="playCard(card)"
             logo="https://cdn.freebiesupply.com/logos/large/2x/acme-logo-png-transparent.png"
           />

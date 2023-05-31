@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Card, Player, Vote } from "@/model/Model";
+import type { Card, Game, Player, Vote } from "@/model/Model";
 import GalleryItem from "./GalleryItem.vue";
 import _ from "lodash";
 import { useSessionStore } from "@/stores/stores";
@@ -7,7 +7,8 @@ import { ref, toRef } from "vue";
 
 const props = defineProps<{
   players: Player[],
-  votes: Vote[]
+  votes: Vote[],
+  cardLogoUrl?: string
 }>()
 
 const players = toRef(props, 'players')
@@ -30,7 +31,7 @@ function playerCardHidden(player: Player): boolean {
   <div class="gallery">
     <div class="row">
         <div v-for="player in players" v-bind:key="player.name" class="item col-3">
-            <GalleryItem :player="player" :card="playerCard(player)" :hidden="playerCardHidden(player)" />
+            <GalleryItem :player="player" :card="playerCard(player)" :hidden="playerCardHidden(player)" :card-logo-url="cardLogoUrl" />
         </div>
     </div>
   </div>

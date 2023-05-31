@@ -6,7 +6,7 @@ import type { Card } from "@/model/Model";
 const props = defineProps<{
   card: Card,
   hidden: boolean,
-  logo?: string
+  cardLogoUrl?: string
 }>();
 
 const emit = defineEmits(['click']);
@@ -15,11 +15,6 @@ function cardIcon(card: number) {
   const icons = ["♣", "♠", "♥", "♦"];
   return icons[props.card.value % icons.length];
 }
-
-const logoUrl = computed(() => {
-  return props.logo ||
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAMAAABiM0N1AAAAM1BMVEVHcEwxNz0xNz0xNz0xNz0xNz0xNz0xNz0xNz0xNz0xNz0xNz0xNz0xNz0xNz0xNz0xNz3UIFXbAAAAEXRSTlMAcBCf/88w71BggN+/QK8gj+DykpQAAAFqSURBVHgBzdcH0qswDARgIS24E+5/2dcLHg2O2b/lm5Zpm6ISJBOWRd6DGmAqb6YrAKxvTtoCfgmbvEkM+CNEeYOEkyS0jE4WkqEHY3McY3McY3McY3McY3Mc43P4JMOQ8TlcUsJTSSZETIjze2NoYqtowZSiMlYxqcpQxrQsAw03NLmkATcElSs7btnZDnIiX/mpHsjwmMo9QHiIZyAY+4EmPpKBYlwvTnRlAinxTT1ub9Ck00BrfFePuvsA7ZCzClp98aAdtP1jqhZBi3KmoOkHzVp7y4R0Kl/83gbKJk56+1obDe7qXviBdRY4tuCPxeAscqEVdEKS/X+ZU0CnNLmWTlHB9PTnElTUwikmyVg7agCwWtK+AklENNkKINSjyS1a/KMH5XBjzmnoNP7mHz+lszlsUgtwQnvjzc//4qngQkkyTfsYH6XPI1qLueKpmmNro5yKG6ryN9bspYWb3i3o8eFf7S0/9nfEdTEqQju3eQAAAABJRU5ErkJggg==";
-});
 </script>
 
 <template>
@@ -34,7 +29,7 @@ const logoUrl = computed(() => {
     <div v-else>
       <img
         class="logo"
-        :src="logoUrl"
+        :src="cardLogoUrl"
         alt=""
       />
     </div>

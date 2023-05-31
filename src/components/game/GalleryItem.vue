@@ -11,7 +11,8 @@ const props = defineProps<{
   card?: Card,
   hidden?: boolean,
   minBadge?: boolean,
-  maxBadge?: boolean
+  maxBadge?: boolean,
+  cardLogoUrl?: string
 }>();
 const sessionStore = useSessionStore()
 
@@ -27,7 +28,7 @@ const hideCard = ref<boolean>(props.hidden !== false);
       <span class="name">{{ player.name }}</span>
       <span v-if="minBadge" class="badge badge-min">Minimum</span>
       <span v-if="maxBadge" class="badge badge-max">Maximum</span>
-      <PokerCard class="card" v-if="card" :card="card" :hidden="hideCard" />
+      <PokerCard class="card" :card-logo-url="cardLogoUrl" v-if="card" :card="card" :hidden="hideCard" />
     </div>
     <div>
       

@@ -57,6 +57,14 @@ const topic = computed(() => {
   }
 })
 
+const cardLogoUrl = computed(() => {
+  if (game.value.id) {
+    return gameService.getCardIconUrl(game.value.id!!)
+  } else {
+    return undefined
+  }
+})
+
 // -------------
 // Initalization
 // -------------
@@ -190,7 +198,7 @@ function onCardPlayed(card: Card | undefined) {
       <button v-if="round" class="btn btn-danger end-round-btn" @click="endRound">End round</button>
     </div>
     <div v-if="round && !round.ended" class="board">
-      <PlayerGallery :players="players" :votes="votes" />
+      <PlayerGallery :game="game" :players="players" :votes="votes" :card-logo-url="cardLogoUrl" />
     </div>
     <div class="container" v-if="!round && roundResult">
       <RoundResults class="results" :results="roundResult" />
@@ -203,7 +211,7 @@ function onCardPlayed(card: Card | undefined) {
         <button class="btn btn-primary start-round-btn" @click="startRound">Start Round 🚀</button>
       </div>
     </div>
-    <CardDeck v-if="round" :cards="cards" @update="onCardPlayed" />
+    <CardDeck v-if="round" :game="game" :cards="cards" :card-logo-url="cardLogoUrl" @update="onCardPlayed" />
   </div>
 </template>
   

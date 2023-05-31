@@ -1,5 +1,5 @@
 import { sha512 } from "js-sha512";
-import { api } from "./API";
+import { api, apiBaseUrl } from "./API";
 import type { GameStub, Game, Card, Vote, Player, Round, RoundStub, RoundResult } from "@/model/Model";
 
 export const gameService = {
@@ -63,5 +63,9 @@ export const gameService = {
 
   async getVotes(gameId: string, roundId: string): Promise<Vote[]> {
     return (await api.get(`/v1/games/${gameId}/rounds/${roundId}/votes`)).data;
+  },
+
+  getCardIconUrl(gameId: string): string {
+    return `${apiBaseUrl}/v1/games/${gameId}/theme/card-icon`;
   }
 };
