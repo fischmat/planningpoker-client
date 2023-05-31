@@ -11,7 +11,7 @@ import MainMenuItem from '@/components/MainMenuItem.vue';
       </RouterLink>
 
       <RouterLink to="edit-player">
-        <MainMenuItem id="join-game-card" title="Join Game" icon="/join.png" color="#3636fd" />
+        <MainMenuItem id="edit-player-card" title="Edit Avatar" icon="/user.png" color="#3636fd" />
       </RouterLink>
     </div>
   </main>
@@ -34,7 +34,7 @@ main {
   padding-top: 10px;
 }
 
-#join-game-card {
+#edit-player-card {
   top: 30px;
 }
 
