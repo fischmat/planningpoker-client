@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import _ from 'lodash';
-import { computed, ref } from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 
 const props = defineProps<{
     colors: string[],
@@ -12,8 +12,13 @@ const emit = defineEmits<{
   (e: "change", value: string): void;
 }>();
 
+const initialValue = toRef(props, 'initialValue')
 const variantIndex = ref(props.initialValue ? _.indexOf(props.colors, props.initialValue) : 0)
 const color = computed(() => props.colors[variantIndex.value % props.colors.length])
+
+watch(initialValue, (newValue) => {
+    variantIndex.value = _.indexOf(props.colors, newValue)
+})
 
 function prevVariant() {
     variantIndex.value -= 1;

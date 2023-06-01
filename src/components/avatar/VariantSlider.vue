@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 
 const props = defineProps<{
     max: number,
@@ -15,6 +15,11 @@ const emit = defineEmits<{
 
 const variantNum = ref(props.initialValue || 1)
 const firstIndex = !props.noneOption ? 1 : 0
+const initialValue = toRef(props, 'initialValue')
+
+watch(initialValue, (newValue) => {
+    variantNum.value = newValue || 1
+})
 
 const variantLabel = computed(() => {
     if (variantNum.value === 0) {

@@ -43,6 +43,10 @@ function onSubmit() {
     })
 }
 
+function randomizeAvatar() {
+  player.value.avatar = playerService.getRandomAvatarProps()
+}
+
 // Initialization
 
 async function init() {
@@ -108,8 +112,12 @@ init()
 
       </div>
       <br>
-      <div>
-        <button id="submit-player" class="btn btn-primary" @click="onSubmit">Let's go</button>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col">
+          <button id="randomize-player" class="btn btn-secondary" @click="randomizeAvatar">Randomize</button>
+          <button id="submit-player" class="btn btn-primary" @click="onSubmit">Let's go</button>
+        </div>
       </div>
     </div>
   </div>
@@ -137,6 +145,12 @@ init()
 
 .game-setup {
   margin-top: 0;
+}
+
+.btn-secondary,
+.btn-secondary:focus {
+  background-color: unset;
+  color: #333;
 }
 </style>
   
