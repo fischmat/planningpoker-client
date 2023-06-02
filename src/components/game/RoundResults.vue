@@ -4,13 +4,25 @@ import PokerCard from './PokerCard.vue';
 import GalleryItem from './GalleryItem.vue';
 import _ from 'lodash';
 import { computed } from '@vue/reactivity';
+import Rainbow from 'rainbowvis.js'
 
 const props = defineProps<{
   results: RoundResult
 }>()
 
-const average = computed(() => props.results.averageVote || 'N/A')
+const average = computed(() => props.results.averageVote?.toFixed(2) || 'N/A')
 const variance = computed(() => props.results.variance?.toFixed(2) || 'N/A')
+
+const varianceRainbow = new Rainbow()
+varianceRainbow.setSpectrum('#008450', '#EFB700', '#B81D13')
+varianceRainbow.setNumberRange(0, props.results.variance || 100)
+const varianceColor = computed(() => {
+  if (typeof props.results.variance == 'number') {
+    return `#${varianceRainbow.colorAt(props.results.variance)}`
+  } else {
+    return '#000000'
+  }
+})
 
 function isMinimumVote(vote: Vote): boolean {
   return _.some(props.results.minVotes, (mv) => mv.id == vote.id)
@@ -39,7 +51,7 @@ function isMaximumVote(vote: Vote): boolean {
           </div>
           <div class="col">
             <div class="centered sub">
-              <span class="metric">{{ variance }}</span>
+              <span class="metric" v-bind:style="{ color: varianceColor }">{{ variance }}</span>
               <span>Variance</span>
             </div>
           </div>
