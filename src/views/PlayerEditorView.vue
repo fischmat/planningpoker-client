@@ -18,8 +18,8 @@ const player = ref<PlayerStub>({
 const sessionStore = useSessionStore()
 const router = useRouter()
 
-const hairColors = ['aa8866', 'debe99', '241c11', '4f1a00', '9a3300', 'fbe7a1', '505050', 'dc95dc', '50b4ff', '11642f'];
-const skinColors = ['ffdbac', 'f1c27d', 'e0ac69', 'c68642', '8d5524'];
+const hairColors = playerService.hairColors;
+const skinColors = playerService.skinColors;
 
 const isValid = computed(() => !_.isEmpty(player.value.name))
 

@@ -6,6 +6,9 @@ import { useSessionStore } from "@/stores/stores";
 const sessionStore = useSessionStore()
 
 export const playerService = {
+  hairColors: ['aa8866', 'debe99', '241c11', '4f1a00', '9a3300', 'fbe7a1', '505050', 'dc95dc', '50b4ff', '11642f'],
+  skinColors: ['ffdbac', 'f1c27d', 'e0ac69', 'c68642', '8d5524', '3b2219'],
+
   async getPlayer(): Promise<Player | null> {
     // Try to reprovision player from stored stub
     const reprovisioned = await this.tryReprovisionPlayer()
@@ -56,8 +59,8 @@ export const playerService = {
 
   getRandomAvatarProps(): AvatarProps {
     const longHair = _.random(1, 2) % 2 == 0;
-    const hairColor = _.shuffle(['aa8866', 'debe99', '241c11', '4f1a00', '9a3300'])[0];
-    const skinColor = _.shuffle(['ffdbac', 'f1c27d', 'e0ac69', 'c68642', '8d5524'])[0];
+    const hairColor = _.shuffle(this.hairColors)[0];
+    const skinColor = _.shuffle(this.skinColors)[0];
     return {
       backgroundColor: "transparent",
       earrings: _.random(1, 6),
