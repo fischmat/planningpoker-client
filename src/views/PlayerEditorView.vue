@@ -78,7 +78,7 @@ init()
 <template>
   <div class="game-setup">
     <div class="settings">
-      <h1>Setup Player</h1>
+      <h1>Create Avatar</h1>
 
       <div class="row">
         <div class="col">
