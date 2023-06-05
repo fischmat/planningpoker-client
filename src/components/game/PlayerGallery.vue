@@ -45,4 +45,9 @@ function playerCardHidden(player: Player): boolean {
 .item {
   padding: 20px;
 }
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
 </style>
