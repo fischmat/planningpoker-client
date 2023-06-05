@@ -3,7 +3,7 @@ import { eventService } from '@/services/EventService';
 import { gameService } from '@/services/GameService';
 import type { Card } from '@/model/Model';
 import _ from 'lodash';
-import { computed, ref, type Ref } from 'vue';
+import { computed, onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSessionStore } from '@/stores/stores';
 import { playerService } from '@/services/PlayerService';
@@ -23,6 +23,20 @@ const cardsString = computed(() => {
 const isValid = computed(() => {
   return !_.isEmpty(name.value) && !_.isEmpty(playableCards.value)
 })
+
+// -------------
+// Mounted
+// -------------
+
+const sessionNameInput = ref<any>(null)
+
+onMounted(() => {
+  sessionNameInput.value.focus();
+})
+
+// -------------
+// Methods
+// -------------
 
 function onCardStringChanged(e: any) {
   const splits = _.split(e.target.value, ",")
@@ -76,8 +90,8 @@ async function onCardIconSelected(e: any) {
         <label>Session name:</label>
         <div class="input-group flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">♣</span>
-          <input id="session-name" type="text" v-model="name" class="form-control" placeholder="Session name"
-            aria-label="Session name" aria-describedby="addon-wrapping" />
+          <input id="session-name" ref="sessionNameInput" type="text" v-model="name" class="form-control"
+            placeholder="Session name" aria-label="Session name" aria-describedby="addon-wrapping" />
         </div>
       </div>
 
@@ -101,8 +115,8 @@ async function onCardIconSelected(e: any) {
 
       <div class="mb-3">
         <label for="card-icon-file" class="form-label">Card Icon (optional)</label>
-        <input class="form-control form-control-sm" id="card-icon-file" accept=".jpg,.jpeg,.bmp,.png,.webp,.tiff" type="file"
-          @change="onCardIconSelected">
+        <input class="form-control form-control-sm" id="card-icon-file" accept=".jpg,.jpeg,.bmp,.png,.webp,.tiff"
+          type="file" @change="onCardIconSelected">
       </div>
 
       <div>

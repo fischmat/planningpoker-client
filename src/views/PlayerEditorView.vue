@@ -7,7 +7,7 @@ import { playerService } from "@/services/PlayerService";
 import { useSessionStore } from "@/stores/stores";
 import { computed } from "@vue/reactivity";
 import _ from "lodash";
-import { ref, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import { useRouter } from "vue-router";
 
 const player = ref<PlayerStub>({
@@ -22,10 +22,21 @@ const hairColors = ['aa8866', 'debe99', '241c11', '4f1a00', '9a3300'];
 const skinColors = ['ffdbac', 'f1c27d', 'e0ac69', 'c68642', '8d5524'];
 
 const isValid = computed(() => !_.isEmpty(player.value.name))
-const isToched = ref(false)
+
+// -------------
+// Mounted
+// -------------
+
+const playerNameInput = ref<any>(null)
+onMounted(() => {
+  playerNameInput.value.focus()
+})
+
+// -------------
+// Methods
+// -------------
 
 function onSubmit() {
-  isToched.value = true;
   if (!isValid.value) {
     return;
   }
@@ -78,11 +89,8 @@ init()
               <div class="form-group" style="display: inline-block">
                 <label>Your name:</label>
                 <div class="input-group flex-nowrap">
-                  <input id="player-name" type="text" class="form-control" placeholder="Username" aria-label="Username"
+                  <input id="player-name" ref="playerNameInput" type="text" class="form-control" placeholder="Username" aria-label="Username"
                     aria-describedby="addon-wrapping" v-model="player.name" />
-                </div>
-                <div class="invalid-feedback" :style="{ 'display': !isValid && isToched ? 'block' : 'none' }">
-                  Please tell us your name!
                 </div>
               </div>
             </div>
@@ -116,7 +124,7 @@ init()
         <div class="col"></div>
         <div class="col">
           <button id="randomize-player" class="btn btn-secondary" @click="randomizeAvatar">Randomize</button>
-          <button id="submit-player" class="btn btn-primary" @click="onSubmit">Let's go</button>
+          <button id="submit-player" :disabled="!isValid" class="btn btn-primary" @click="onSubmit">Let's go</button>
         </div>
       </div>
     </div>

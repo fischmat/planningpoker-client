@@ -52,3 +52,9 @@ body {
 .settings .form-group {
   margin-bottom: 30px;
 }
+
+.btn:disabled {
+  background-color: #aaa;
+  border-color: #777;
+  color: #333;
+}
