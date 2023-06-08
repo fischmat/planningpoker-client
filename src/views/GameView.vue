@@ -5,6 +5,7 @@ import RoundResults from '@/components/game/RoundResults.vue';
 import type { Round, Card, Game, Player, AvatarProps, RoundStub, RoundResult, Vote } from '@/model/Model';
 import { eventService } from '@/services/EventService';
 import { gameService } from '@/services/GameService'
+import { passwordService } from '@/services/PasswordService';
 import { playerService } from '@/services/PlayerService';
 import { useSessionStore } from '@/stores/stores';
 import { computed } from '@vue/reactivity';
@@ -100,14 +101,15 @@ async function init(): Promise<any> {
   const isPlayerInGame = _.some(player.value.gameIds, (id) => id == game.value?.id);
 
   // Check password
-  if (game.value?.hasPassword && !isPlayerInGame && !sessionStore.password) {
+  const storedPassword = passwordService.getGamePassword(game.value.id!!)
+  if (game.value?.hasPassword && !storedPassword) {
     await router.push({ name: "game-password", query: { gameId: game.value.id } })
     return
   }
 
   // Enter the game
-  player.value = await gameService.joinGame(game.value.id!!, sessionStore.password || null)
-  await eventService.enterGame(game.value.id!!, sessionStore.password || null)
+  player.value = await gameService.joinGame(game.value.id!!, storedPassword || null)
+  await eventService.enterGame(game.value.id!!, storedPassword || null)
 
   // Get current round
   round.value = await gameService.getCurrentRound(game.value.id!!)

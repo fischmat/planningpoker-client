@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { gameService } from '@/services/GameService';
+import { passwordService } from '@/services/PasswordService';
 import { playerService } from '@/services/PlayerService';
 import { useSessionStore } from '@/stores/stores';
 import { ref } from 'vue';
@@ -18,7 +19,7 @@ const gameId = route.query.gameId as string | undefined
 async function onSubmit() {
   try {
     await gameService.joinGame(gameId!!, password.value)
-    sessionStore.password = password.value
+    passwordService.storeGamePassword(gameId!!, password.value)
     await router.push({ name: 'game', query: { gameId: sessionStore.currentGame?.id } })
   } catch {
     passwordValid.value = false

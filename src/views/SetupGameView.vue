@@ -7,6 +7,7 @@ import { computed, onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSessionStore } from '@/stores/stores';
 import { playerService } from '@/services/PlayerService';
+import { passwordService } from '@/services/PasswordService';
 
 
 const router = useRouter()
@@ -68,7 +69,9 @@ async function onSubmit(e: any) {
   }
 
   sessionStore.currentGame = game;
-  sessionStore.password = password.value;
+  if (password.value) {
+    passwordService.storeGamePassword(game.id!!, password.value)
+  }
   if (await playerService.getPlayer()) {
     router.push({ name: 'game', query: { gameId: game.id } });
   } else {
