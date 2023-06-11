@@ -51,7 +51,7 @@ function onCardStringChanged(e: any) {
 
   const cards = splits.map((s) => {
     return { value: _.toNumber(s) } as Card;
-  });
+  }).filter((c) => !Number.isNaN(c.value));
   playableCards.value = _.sortBy(_.uniq(cards), (c) => c.value);
 }
 
