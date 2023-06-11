@@ -58,7 +58,7 @@ function onCardStringChanged(e: any) {
 async function onSubmit(e: any) {
   const game = await gameService.createGame({
     name: name.value,
-    password: password.value,
+    password: password.value || null,
     playableCards: playableCards.value
   });
   console.log(`Created new game ${game.id}.`);
