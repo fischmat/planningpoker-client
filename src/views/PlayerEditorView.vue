@@ -89,8 +89,8 @@ init()
               <div class="form-group" style="display: inline-block">
                 <label>Your name:</label>
                 <div class="input-group flex-nowrap">
-                  <input id="player-name" ref="playerNameInput" type="text" class="form-control" placeholder="Username" aria-label="Username"
-                    aria-describedby="addon-wrapping" v-model="player.name" />
+                  <input id="player-name" ref="playerNameInput" type="text" class="form-control" placeholder="Username"
+                    aria-label="Username" aria-describedby="addon-wrapping" v-model="player.name" />
                 </div>
               </div>
             </div>
@@ -98,23 +98,30 @@ init()
         </div>
 
         <div class="col">
-          <VariantSlider label="Eyes" :initial-value="player.avatar?.eyes" :max="26" variant-label="Eyes Variant"
+          <span class="prop-heading">Face</span>
+          <VariantSlider class="avatar-input" label="Eyes" :initial-value="player.avatar?.eyes" :max="26" variant-label="Eyes Variant"
             @change="$v => player.avatar!!.eyes = $v!!" />
-          <VariantSlider label="Eyebrows" :initial-value="player.avatar?.eyebrows" variant-label="Eyebrow Variant"
+          <VariantSlider class="avatar-input" label="Eyebrows" :initial-value="player.avatar?.eyebrows" variant-label="Eyebrow Variant"
             :max="15" @change="$v => player.avatar!!.eyebrows = $v!!" />
-          <VariantSlider label="Mouth" :initial-value="player.avatar?.mouth" variant-label="Mouth Variant" :max="30"
+          <VariantSlider class="avatar-input" label="Mouth" :initial-value="player.avatar?.mouth" variant-label="Mouth Variant" :max="30"
             @change="$v => player.avatar!!.mouth = $v!!" />
-          <VariantSlider label="Earrings" :initial-value="player.avatar?.earrings" variant-label="Earring Type" :max="6"
-            :noneOption="true" @change="$v => player.avatar!!.earrings = $v" />
-          <ColorSelect label="Hair Color" :initial-value="player.avatar?.hairColor" :colors="hairColors"
+          <hr>
+          <span class="prop-heading">Hair</span>
+          <ColorSelect class="avatar-input" label="Hair Color" :initial-value="player.avatar?.hairColor" :colors="hairColors"
             @change="$v => player.avatar!!.hairColor = $v" />
-          <VariantSlider label="Hair Length" :initial-value="player.avatar?.longHair ? 2 : 1" variant-label="Hair Length"
+          <VariantSlider class="avatar-input" label="Hair Length" :initial-value="player.avatar?.longHair ? 2 : 1" variant-label="Hair Length"
             :max="2" @change="$v => { player.avatar!!.longHair = ($v == 2); player.avatar!!.hair = 1; }" />
-          <VariantSlider label="Hair Style" :initial-value="player.avatar?.hair" :max="19" variant-label="Hair Variant"
+          <VariantSlider class="avatar-input" label="Hair Style" :initial-value="player.avatar?.hair" :max="19" variant-label="Hair Variant"
             :noneOption="true" @change="$v => player.avatar!!.hair = $v" />
-          <VariantSlider label="Glasses" :initial-value="player.avatar?.glasses" :max="5" variant-label="Glasses"
+          <hr>
+          <span class="prop-heading">Accessories</span>
+          <VariantSlider class="avatar-input" label="Earrings" :initial-value="player.avatar?.earrings" variant-label="Earring Type" :max="6"
+            :noneOption="true" @change="$v => player.avatar!!.earrings = $v" />
+          <VariantSlider class="avatar-input" label="Glasses" :initial-value="player.avatar?.glasses" :max="5" variant-label="Glasses"
             :noneOption="true" @change="$v => player.avatar!!.glasses = $v" />
-          <ColorSelect label="Skin Color" :initial-value="player.avatar?.skinColor" :colors="skinColors"
+          <hr>
+          <span class="prop-heading">Skin</span>
+          <ColorSelect class="avatar-input" label="Skin Color" :initial-value="player.avatar?.skinColor" :colors="skinColors"
             @change="$v => player.avatar!!.skinColor = $v" />
         </div>
 
@@ -159,6 +166,20 @@ init()
 .btn-secondary:focus {
   background-color: unset;
   color: #333;
+}
+
+.avatar-input {
+  margin-top: 5px;;
+}
+
+.prop-heading {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 2pt;
+  color: #808080;
 }
 </style>
   
