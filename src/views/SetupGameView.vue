@@ -102,7 +102,7 @@ async function onCardIconSelected(e: any) {
         <label>Password (optional):</label>
         <div class="input-group flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">🔒</span>
-          <input id="session-password" type="text" v-model="password" class="form-control" placeholder="Password"
+          <input id="session-password" type="password" v-model="password" class="form-control" placeholder="Password"
             aria-label="Password" aria-describedby="addon-wrapping" />
         </div>
       </div>
