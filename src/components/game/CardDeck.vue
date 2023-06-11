@@ -67,6 +67,7 @@ watch(() => props.cards, (cards) => {
           <PokerCard
             @mouseover="peekCard(card, true)"
             @mouseleave="peekCard(card, false)"
+            :id="`deck-card-${card.value}`"
             class="card"
             :class="{ inactive: isInactiveCard(card), active: isActiveCard(card) }"
             :hidden="isHidden(card)"
