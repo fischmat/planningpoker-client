@@ -37,7 +37,7 @@ function isMaximumVote(vote: Vote): boolean {
   <div>
     <div v-if="results.suggestedCard">
       <div class="results">
-        <PokerCard class="centered" :card="results.suggestedCard" :hidden="false" />
+        <PokerCard id="suggested-card" class="centered" :card="results.suggestedCard" :hidden="false" />
         <div class="centered sub">
           <span>Suggested card</span>
         </div>
@@ -45,13 +45,13 @@ function isMaximumVote(vote: Vote): boolean {
         <div class="row">
           <div class="col">
             <div class="centered sub">
-              <span class="metric">{{ average }}</span>
+              <span id="average" class="metric">{{ average }}</span>
               <span>Average</span>
             </div>
           </div>
           <div class="col">
             <div class="centered sub">
-              <span class="metric" v-bind:style="{ color: varianceColor }">{{ variance }}</span>
+              <span id="variance" class="metric" v-bind:style="{ color: varianceColor }">{{ variance }}</span>
               <span>Variance</span>
             </div>
           </div>
@@ -61,7 +61,7 @@ function isMaximumVote(vote: Vote): boolean {
           <h2>Votes</h2>
         </div>
         <br>
-        <div class="row">
+        <div id="votes" class="row">
           <div class="col" v-for="vote in results.votes">
             <GalleryItem :player="vote.player" :card="vote.card" :hidden="false"
               :min-badge="isMinimumVote(vote) && !isMaximumVote(vote)"
