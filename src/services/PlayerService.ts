@@ -32,6 +32,9 @@ export const playerService = {
   },
 
   getAvatarPreview(props: AvatarProps): string {
+    if (!props) {
+      props = this.getRandomAvatarProps()
+    }
     const queryParams = [
       `backgroundColor=${props.backgroundColor}`,
       `eyebrows=${props.eyebrows}`,
