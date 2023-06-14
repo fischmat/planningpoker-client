@@ -17,6 +17,8 @@ export const eventService = {
     };
     emitEvent(s, EnterGameCommandId, command);
 
+    s.on('disconnect', (e: any) => { PubSub.publish(DisconnectEventId, e) })
+    s.on(ReconnectEventId, (e: any) => { PubSub.publish(ReconnectEventId, e) })
     s.on(PlayerJoinedEventId, (e: any) => { PubSub.publish(PlayerJoinedEventId, e) })
     s.on(PlayerLeftEventId, (e: any) => { PubSub.publish(PlayerLeftEventId, e) })
     s.on(RoundStartedEventId, (e: any) => { PubSub.publish(RoundStartedEventId, e) })
@@ -60,6 +62,14 @@ export const eventService = {
   onError(callback: (event: ErrorEvent) => any) {
     PubSub.subscribe(ErrorEventId, (_, e) => callback(e));
   },
+
+  onDisconnect(callback: () => any) {
+    PubSub.subscribe(DisconnectEventId, () => callback())
+  },
+
+  onReconnect(callback: () => any) {
+    PubSub.subscribe(ReconnectEventId, () => callback())
+  }
 };
 
 async function createSocket(): Promise<any> {
@@ -95,6 +105,8 @@ type LeaveGameCommand = {
 const LeaveGameCommandId = "leaveGame";
 
 // Socket.IO events
+const DisconnectEventId = "disconnect";
+const ReconnectEventId = "reconnect";
 
 type GameEnteredEvent = {
   gameId: string,

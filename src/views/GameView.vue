@@ -81,6 +81,12 @@ async function init(): Promise<any> {
     }
   }
 
+  const playerOrNull = await playerService.getPlayer()
+  if (!playerOrNull) {
+    await router.push({ name: 'edit-player' });
+    return
+  }
+
   // Go to index if no game is active yet
   if (!sessionStore.currentGame) {
     await router.push({ path: "/" })
@@ -88,17 +94,6 @@ async function init(): Promise<any> {
   }
   game.value = sessionStore.currentGame
   setPageTitle(game.value)
-
-  // Set player
-  const playerOrNull = await playerService.getPlayer()
-  if (!playerOrNull) {
-    await router.push({ name: 'edit-player' });
-    return
-  }
-  player.value = playerOrNull
-  sessionStore.currentPlayer = player.value
-
-  const isPlayerInGame = _.some(player.value.gameIds, (id) => id == game.value?.id);
 
   // Check password
   const storedPassword = passwordService.getGamePassword(game.value.id!!)
@@ -111,20 +106,13 @@ async function init(): Promise<any> {
   player.value = await gameService.joinGame(game.value.id!!, storedPassword || null)
   await eventService.enterGame(game.value.id!!, storedPassword || null)
 
-  // Get current round
-  round.value = await gameService.getCurrentRound(game.value.id!!)
-  sessionStore.currentRound = round.value
-  rounds.value = await gameService.getRounds(game.value.id!!)
-
-  // Get votes
-  if (round.value) {
-    votes.value = await gameService.getVotes(game.value.id!!, round.value.id!!)
-  }
-
-  cards.value = game.value?.playableCards || []
-  players.value = await gameService.getPlayers(game.value?.id!!)
+  // Synchronize state
+  await synchronize()
 
   // Register for events
+  eventService.onReconnect(async () => {
+    await synchronize()
+  });
   eventService.onPlayerJoined(async (event) => {
     if (event.gameId == game.value?.id) {
       players.value = await gameService.getPlayers(game.value?.id!!)
@@ -188,6 +176,48 @@ function onCardPlayed(card: Card | undefined) {
   } else {
     gameService.revokeVote(game.value?.id!!, round.value?.id!!)
   }
+}
+
+async function synchronize() {
+  // Get game
+  if (!sessionStore.currentGame) {
+    await router.push({ path: "/" })
+    return
+  }
+  const gameOrNull = await gameService.getGame(sessionStore.currentGame.id!!)
+  if (!gameOrNull) {
+    await router.push({ path: "/" })
+    return
+  }
+  game.value = gameOrNull
+  sessionStore.currentGame = gameOrNull
+
+  // Get player
+  const playerOrNull = await playerService.getPlayer()
+  if (!playerOrNull) {
+    await router.push({ name: 'edit-player' });
+    return
+  }
+  player.value = playerOrNull
+  sessionStore.currentPlayer = player.value
+
+  // Get current round
+  round.value = await gameService.getCurrentRound(game.value.id!!)
+  sessionStore.currentRound = round.value
+
+  // Get all rounds
+  rounds.value = await gameService.getRounds(game.value.id!!)
+
+  // Get votes
+  if (round.value) {
+    votes.value = await gameService.getVotes(game.value.id!!, round.value.id!!)
+  }
+
+  // Get cards
+  cards.value = game.value?.playableCards || []
+
+  // Get players
+  players.value = await gameService.getPlayers(game.value?.id!!)
 }
 
 </script>
