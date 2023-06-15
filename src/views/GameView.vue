@@ -71,6 +71,14 @@ const cardLogoUrl = computed(() => {
 // -------------
 
 async function init(): Promise<any> {
+  // HACK: Reload page initially to prevent avatars from being too small
+  if (route.query.ref === 'edit-player') {
+    const params = new URLSearchParams(location.search)
+    params.delete('ref')
+    location.search = params.toString()
+    return
+  }
+
   // Set current game from URL params
   if (route.query.gameId) {
     try {

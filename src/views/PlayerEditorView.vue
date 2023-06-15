@@ -47,7 +47,7 @@ function onSubmit() {
       sessionStore.persistPlayer()
 
       if (sessionStore.currentGame != null) {
-        router.push({ name: 'game', query: { gameId: sessionStore.currentGame.id } })
+        router.push({ name: 'game', query: { gameId: sessionStore.currentGame.id, ref: 'edit-player' } })
       } else {
         router.push({ path: '/' })
       }
