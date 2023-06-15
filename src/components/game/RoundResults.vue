@@ -15,7 +15,7 @@ const variance = computed(() => props.results.variance?.toFixed(2) || 'N/A')
 
 const varianceRainbow = new Rainbow()
 varianceRainbow.setSpectrum('#008450', '#EFB700', '#B81D13')
-varianceRainbow.setNumberRange(0, props.results.variance || 100)
+varianceRainbow.setNumberRange(0, props.results.averageVote || 100)
 const varianceColor = computed(() => {
   if (typeof props.results.variance == 'number') {
     return `#${varianceRainbow.colorAt(props.results.variance)}`
