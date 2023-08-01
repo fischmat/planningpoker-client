@@ -12,7 +12,9 @@ const props = defineProps<{
 
 const average = computed(() => props.results.averageVote?.toFixed(2) || 'N/A')
 const variance = computed(() => props.results.variance?.toFixed(2) || 'N/A')
+const sortedVotes = computed(() => _.sortBy(props.results.votes, (v) => v.card.value))
 
+// Variance
 const varianceRainbow = new Rainbow()
 varianceRainbow.setSpectrum('#008450', '#EFB700', '#B81D13')
 varianceRainbow.setNumberRange(0, props.results.averageVote || 100)
@@ -24,6 +26,7 @@ const varianceColor = computed(() => {
   }
 })
 
+// Methods
 function isMinimumVote(vote: Vote): boolean {
   return _.some(props.results.minVotes, (mv) => mv.id == vote.id)
 }
@@ -62,7 +65,7 @@ function isMaximumVote(vote: Vote): boolean {
         </div>
         <br>
         <div id="votes" class="row">
-          <div class="col" v-for="vote in results.votes">
+          <div class="col-3" v-for="vote in sortedVotes">
             <GalleryItem :player="vote.player" :card="vote.card" :hidden="false"
               :min-badge="isMinimumVote(vote) && !isMaximumVote(vote)"
               :max-badge="isMaximumVote(vote) && !isMinimumVote(vote)" />
