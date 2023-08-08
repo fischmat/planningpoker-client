@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CardDeck from '@/components/game/CardDeck.vue';
 import PlayerGallery from '@/components/game/PlayerGallery.vue';
-import RoundResults from '@/components/game/RoundResults.vue';
+import RoundResults from '@/components/game/results/RoundResults.vue';
 import type { Round, Card, Game, Player, AvatarProps, RoundStub, RoundResult, Vote } from '@/model/Model';
 import { eventService } from '@/services/EventService';
 import { gameService } from '@/services/GameService'

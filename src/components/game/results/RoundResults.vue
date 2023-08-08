@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { RoundResult, Vote } from '@/model/Model';
-import PokerCard from './PokerCard.vue';
-import GalleryItem from './GalleryItem.vue';
+import PokerCard from '../PokerCard.vue';
+import GalleryItem from '../GalleryItem.vue';
 import _ from 'lodash';
 import { computed } from '@vue/reactivity';
 import Rainbow from 'rainbowvis.js'
+import ResultCharts from './ResultCharts.vue';
 
 const props = defineProps<{
   results: RoundResult
@@ -13,6 +14,15 @@ const props = defineProps<{
 const average = computed(() => props.results.averageVote?.toFixed(2) || 'N/A')
 const variance = computed(() => props.results.variance?.toFixed(2) || 'N/A')
 const sortedVotes = computed(() => _.sortBy(props.results.votes, (v) => v.card.value))
+const median = computed(() => {
+  const sortedValues = sortedVotes.value.map((v) => v.card.value)
+  const halfIdx = _.floor(sortedValues.length / 2)
+  if (sortedValues.length % 2 == 0) {
+    return _.mean([sortedValues[halfIdx - 1], sortedValues[halfIdx]])
+  } else {
+    return sortedValues[halfIdx]
+  }
+})
 
 // Variance
 const varianceRainbow = new Rainbow()
@@ -54,11 +64,19 @@ function isMaximumVote(vote: Vote): boolean {
           </div>
           <div class="col">
             <div class="centered sub">
+              <span id="median" class="metric">{{ median }}</span>
+              <span>Median</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="centered sub">
               <span id="variance" class="metric" v-bind:style="{ color: varianceColor }">{{ variance }}</span>
               <span>Variance</span>
             </div>
           </div>
         </div>
+
+        <ResultCharts :results="results"/>
 
         <div class="centered">
           <h2>Votes</h2>

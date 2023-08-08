@@ -16,6 +16,7 @@
     "axios": "^1.4.0",
     "axios-cookiejar-support": "^4.0.6",
     "bootstrap": "^5.2.3",
+    "chart.js": "^4.3.3",
     "js-sha512": "^0.8.0",
     "lodash": "^4.17.21",
     "pinia": "^2.0.32",
