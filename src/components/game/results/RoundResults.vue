@@ -76,7 +76,7 @@ function isMaximumVote(vote: Vote): boolean {
           </div>
         </div>
 
-        <ResultCharts :results="results"/>
+        <!-- <ResultCharts :results="results"/> -->
 
         <div class="centered">
           <h2>Votes</h2>
