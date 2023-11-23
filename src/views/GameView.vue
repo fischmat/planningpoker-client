@@ -27,6 +27,64 @@ const sessionStore = useSessionStore()
 const router = useRouter()
 const route = useRoute()
 
+class PeriodicSyncTask {
+  private isCancelled: boolean = false
+
+  async startPeriodicSync() {
+    const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+    while(!this.isCancelled) {
+      await delay(1000);
+      await this.synchronize();
+    }
+  }
+
+  async synchronize() {
+    // Get game
+    if (!sessionStore.currentGame) {
+      await router.push({ path: "/" })
+      return
+    }
+    const gameOrNull = await gameService.getGame(sessionStore.currentGame.id!!)
+    if (!gameOrNull) {
+      await router.push({ path: "/" })
+      return
+    }
+    game.value = gameOrNull
+    sessionStore.currentGame = gameOrNull
+
+    // Get player
+    const playerOrNull = await playerService.getPlayer()
+    if (!playerOrNull) {
+      await router.push({ name: 'edit-player' });
+      return
+    }
+    player.value = playerOrNull
+    sessionStore.currentPlayer = player.value
+
+    // Get current round
+    round.value = await gameService.getCurrentRound(game.value.id!!)
+    sessionStore.currentRound = round.value
+
+    // Get all rounds
+    rounds.value = await gameService.getRounds(game.value.id!!)
+
+    // Get votes
+    if (round.value) {
+      votes.value = await gameService.getVotes(game.value.id!!, round.value.id!!)
+    }
+
+    // Get cards
+    cards.value = game.value?.playableCards || []
+
+    // Get players
+    players.value = await gameService.getPlayers(game.value?.id!!)
+  }
+
+  cancel() {
+    this.isCancelled = true;
+  }
+}
+
 // -------------
 // Methods
 // -------------
@@ -115,11 +173,14 @@ async function init(): Promise<any> {
   await eventService.enterGame(game.value.id!!, storedPassword || null)
 
   // Synchronize state
-  await synchronize()
+  const syncTask = new PeriodicSyncTask();
+  syncTask.synchronize()
+    .then(() => syncTask.startPeriodicSync())
+    .then(() => console.log("Periodic synchronization cancelled."));
 
   // Register for events
   eventService.onReconnect(async () => {
-    await synchronize()
+    await syncTask.synchronize()
   });
   eventService.onPlayerJoined(async (event) => {
     if (event.gameId == game.value?.id) {
@@ -186,48 +247,6 @@ function onCardPlayed(card: Card | undefined) {
   }
 }
 
-async function synchronize() {
-  // Get game
-  if (!sessionStore.currentGame) {
-    await router.push({ path: "/" })
-    return
-  }
-  const gameOrNull = await gameService.getGame(sessionStore.currentGame.id!!)
-  if (!gameOrNull) {
-    await router.push({ path: "/" })
-    return
-  }
-  game.value = gameOrNull
-  sessionStore.currentGame = gameOrNull
-
-  // Get player
-  const playerOrNull = await playerService.getPlayer()
-  if (!playerOrNull) {
-    await router.push({ name: 'edit-player' });
-    return
-  }
-  player.value = playerOrNull
-  sessionStore.currentPlayer = player.value
-
-  // Get current round
-  round.value = await gameService.getCurrentRound(game.value.id!!)
-  sessionStore.currentRound = round.value
-
-  // Get all rounds
-  rounds.value = await gameService.getRounds(game.value.id!!)
-
-  // Get votes
-  if (round.value) {
-    votes.value = await gameService.getVotes(game.value.id!!, round.value.id!!)
-  }
-
-  // Get cards
-  cards.value = game.value?.playableCards || []
-
-  // Get players
-  players.value = await gameService.getPlayers(game.value?.id!!)
-}
-
 </script>
 
 
@@ -264,7 +283,6 @@ async function synchronize() {
 .round-info {
   width: 100%;
   display: inline-block;
-  width: 100%;
   text-align: center;
 }
 
