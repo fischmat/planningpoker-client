@@ -265,8 +265,6 @@ function onCardPlayed(card: Card | undefined) {
     <div v-if="!round" class="topic-container">
       <div>
         <input class="topic-input" v-model="roundStub.topic" placeholder="Enter your topic..." type="text" />
-      </div>
-      <div>
         <button class="btn btn-primary start-round-btn" @click="startRound">Start Round 🚀</button>
       </div>
     </div>
@@ -291,15 +289,13 @@ function onCardPlayed(card: Card | undefined) {
 }
 
 .topic-container {
-  position: absolute;
   width: 100%;
-  margin-top: 5px;
-  text-align: center;
-  bottom: 0;
-  padding-bottom: 20px;
 }
 
 .topic-input {
+  width: 50vw;
+  margin-left: 25vw;
+  margin-top: 20px;
   min-width: 30%;
   line-height: 20pt;
   font-size: 20pt;
@@ -313,8 +309,9 @@ function onCardPlayed(card: Card | undefined) {
 }
 
 .start-round-btn {
-  margin-top: 10px;
-  min-width: 30%;
+  width: 50vw;
+  margin-left: 25vw;
+  margin-top: 20px;
 }
 </style>
   
