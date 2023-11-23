@@ -55,7 +55,15 @@ function peekCard(card: Card, visible: boolean) {
 }
 
 watch(() => props.cards, (cards) => {
-  cardVisibility.value = _.fromPairs(_.map(cards, (card) => [card.value, true]))
+  cardVisibility.value = _.fromPairs(
+    cards.map((c) => {
+      // Card is visible if it is the active card or there is not active card
+      const hasActiveCard = !!activeCard.value
+      const isActiveCard = hasActiveCard && activeCard.value?.value == c.value;
+      const isCardVisible = !hasActiveCard || isActiveCard;
+      return [c.value, isCardVisible];
+    })
+  );
 })
 </script>
 
