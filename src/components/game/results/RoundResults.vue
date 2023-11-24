@@ -48,7 +48,7 @@ function isMaximumVote(vote: Vote): boolean {
 
 <template>
   <div>
-    <div v-if="results.suggestedCardConservative">
+    <div v-if="results.suggestedCardConservative && results.suggestedCardMajority">
       <div class="results">
         <div class="row">
           <div class="col-6">
