@@ -48,11 +48,21 @@ function isMaximumVote(vote: Vote): boolean {
 
 <template>
   <div>
-    <div v-if="results.suggestedCard">
+    <div v-if="results.suggestedCardConservative">
       <div class="results">
-        <PokerCard id="suggested-card" class="centered" :card="results.suggestedCard" :hidden="false" />
-        <div class="centered sub">
-          <span>Suggested card</span>
+        <div class="row">
+          <div class="col-6">
+            <PokerCard id="suggested-card" class="centered" :card="results.suggestedCardConservative" :hidden="false" />
+            <div class="centered sub">
+              <span>Suggested card (conservative)</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <PokerCard id="suggested-card" class="centered" :card="results.suggestedCardMajority" :hidden="false" />
+            <div class="centered sub">
+              <span>Suggested card (majority)</span>
+            </div>
+          </div>
         </div>
 
         <div class="row">

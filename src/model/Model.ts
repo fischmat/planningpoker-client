@@ -29,7 +29,8 @@ export type RoundResult = {
     maxVoteValue: number | null,
     minVotes: [Vote],
     maxVotes: [Vote],
-    suggestedCard: Card | null,
+    suggestedCardConservative: Card | null,
+    suggestedCardMajority: Card | null,
     averageVote: number | null,
     variance: number | null
 }
